@@ -97,3 +97,33 @@ ggplot() +
 # take home message:
 # projection, extent, and resolution all have
 # to match!
+
+##############################
+# challenge: make an ovelay for SJER
+# import DSM
+SJER_DSM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+# import DSM hillshade
+SJER_DSM_hill_WGS <-
+  raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_DSMhill_WGS84.tif")
+
+# reproject raster
+SJER_DSM_hill_reprojected <- projectRaster(SJER_DSM_hill_WGS,
+                                           crs = crs(SJER_DSM),
+                                           res = 1)
+
+# convert to data.frames
+SJER_DSM_df <- as.data.frame(SJER_DSM, xy = TRUE)
+
+SJER_DSM_hill_df <- as.data.frame(SJER_DSM_hill_reprojected, xy = TRUE)
+
+ggplot() +
+  geom_raster(data = SJER_DSM_hill_df, 
+              aes(x = x, y = y, 
+                  alpha = SJER_DSMhill_WGS84)
+  ) +
+  geom_raster(data = SJER_DSM_df, 
+              aes(x = x, y = y, 
+                  fill = SJER_dsmCrop, alpha = 0.8)
+  ) + 
+  scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
+  coord_quickmap()

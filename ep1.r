@@ -50,7 +50,38 @@ summary(HARV_DSM)
 
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
+# here's the code:
+DSM_highvals <- reclassify(HARV_DSM, rcl = c(0, 400, NA_integer_, 400, 420, 1L), include.lowest = TRUE)
+# ^^^^^^^^
+# that's not very elegant at all. There must be a way to get only > 400 and overlay it.
+
+DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
+str(DSM_highvals)
+# change that name again
+names(DSM_highvals)[names(DSM_highvals) == 'HARV_dsmCrop'] <- 'Altitude'
+
+str(DSM_highvals)
+
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y, fill = Altitude)) +
-  scale_fill_viridis_c(Altitude > 400 = 'deeppink') +
+  geom_raster(data = HARV_DSM_df, aes(x = x, y = y, fill = Altitude)) + 
+  scale_fill_viridis_c() + 
+  # use reclassified raster data as an annotation
+  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Altitude)) +
+  ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
+
+# ^^^^^^
+# oddly the error message from this says there's a ton of NA's.
+# the reclass must have created a bunch.
+# lesson 2 solves this question by creating custom bins.
+
+summary(DSM_highvals)
+
+ggplot() +
+  geom_histogram(data = HARV_DSM_df, aes(Altitude))
+
+# skipped making more bins.
+
+# Challenge
+# geting info about another raster
+GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
