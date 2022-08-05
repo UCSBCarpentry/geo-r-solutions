@@ -26,4 +26,22 @@ ggplot() +
   ggtitle("AOI Boundary Plot") + 
   coord_sf()
 
+# Let's move on to point and line shapefiles
+HARV_lines <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
+HARV_points <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 
+# that's a "spatial" "dataframe"
+class(HARV_lines)
+
+# it's got a CRS
+# just like raster data does
+# what's the raster version of the command?
+st_crs(HARV_lines)
+
+# bounding boxes make more sense when your
+# shapefile is more than just a single rectangle
+st_bbox(HARV_lines)
+
+# a good demo here would be to make
+# shapefiles of the boundng boxes and
+# overlay them
