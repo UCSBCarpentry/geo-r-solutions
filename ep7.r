@@ -81,4 +81,41 @@ ggplot() +
   coord_sf()
 
 
+# this just moves on in the lesson
+# but if we want to see unique values,
+# we have to get that column to be a factor
 levels(HARV_lines$TYPE)
+
+# now we can see that we need 4 colors
+HARV_lines$TYPE <- factor(HARV_lines$TYPE)
+levels(HARV_lines$TYPE)
+
+road_colors <- c("blue", "green", "navy", "purple")
+
+ggplot() +
+  geom_sf(data = HARV_lines, aes(color = TYPE)) + 
+  scale_color_manual(values = road_colors) +
+  labs(color = 'Road Type') +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails") + 
+  coord_sf()
+
+# use different line widths
+line_widths <- c(1, 2, 3, 4)
+ggplot() +
+  geom_sf(data = HARV_lines, aes(color = TYPE, size = TYPE)) + 
+  scale_color_manual(values = road_colors) +
+  labs(color = 'Road Type') +
+  scale_size_manual(values = line_widths) +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
+  coord_sf()
+
+# they come out in the order they are stored,
+# so you can assign in that order
+levels(HARV_lines$TYPE)
+line_width <- c(1, 3, 2, 6)
+
+ggplot() +
+  geom_sf(data = HARV_lines, aes(size = TYPE)) +
+  scale_size_manual(values = line_width) +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
+  coord_sf()
