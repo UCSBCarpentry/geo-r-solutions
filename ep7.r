@@ -1,4 +1,4 @@
-# ep 3
+# ep 7
 
 # make sure we have the needed libraries
 library(sf)
@@ -33,7 +33,13 @@ HARV_points$Ownership
 HARV_lines$TYPE
 
 # only the unique values
+# but this doesn't give what you expect. 
+# see below
+# the original fix was around line 100
 levels(HARV_lines$TYPE)
+
+# must convert that plain text to a factor
+HARV_lines$TYPE <- factor(HARV_lines$TYPE)
 
 # all this stuff works with the tidyverse
 # so you can use pipes
@@ -119,3 +125,64 @@ ggplot() +
   scale_size_manual(values = line_width) +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
   coord_sf()
+
+# work on that legend
+ggplot() + 
+  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) +
+  scale_color_manual(values = road_colors) +
+  labs(color = 'Road Type') + 
+  ggtitle("NEON Harvard Forest Field Site", 
+          subtitle = "Roads & Trails - Default Legend") + 
+  coord_sf()
+
+# change legend text and draw a box around it
+ggplot() + 
+  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) +
+  scale_color_manual(values = road_colors) + 
+  labs(color = 'Road Type') +
+  theme(legend.text = element_text(size = 20), 
+        legend.box.background = element_rect(size = 1)) + 
+  ggtitle("NEON Harvard Forest Field Site", 
+          subtitle = "Roads & Trails - Modified Legend") +
+  coord_sf()
+
+# make the colors less obnoxious
+new_colors <- c("springgreen", "blue", "magenta", "orange")
+
+ggplot() + 
+  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) + 
+  scale_color_manual(values = new_colors) +
+  labs(color = 'Road Type') +
+  theme(legend.text = element_text(size = 20), 
+        legend.box.background = element_rect(size = 1)) + 
+  ggtitle("NEON Harvard Forest Field Site", 
+          subtitle = "Roads & Trails - Pretty Colors") +
+  coord_sf()
+
+
+# bicycle challenge
+class(HARV_lines$BicyclesHorse)
+
+# same iss ue as roadtype
+levels(HARV_lines$BIKEHORSE)
+HARV_lines$BIKEHORSE <- factor(HARV_lines$BIKEHORSE)
+levels(HARV_lines$BIKEHORSE)
+
+# it's not clear why we should get rid of these
+lines_removeNA <- HARV_lines[!is.na(HARV_lines$BicyclesHo),] 
+
+# First, create a data frame with only those roads where bicycles and horses are allowed
+lines_showHarv <- lines_removeNA %>% 
+  filter(BicyclesHo == "Bicycles and Horses Allowed")
+
+# Next, visualise using ggplot
+ggplot() + 
+  geom_sf(data = HARV_lines) + 
+  geom_sf(data = lines_showHarv, aes(color = BicyclesHo), size = 2) + 
+  scale_color_manual(values = "magenta") +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads Where Bikes and Horses Are Allowed") + 
+  coord_sf()
+
+
+## all new data
+## skip last challenge for time

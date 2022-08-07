@@ -45,3 +45,4 @@ st_bbox(HARV_lines)
 # a good demo here would be to make
 # shapefiles of the boundng boxes and
 # overlay them
+
