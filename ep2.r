@@ -53,6 +53,18 @@ ggplot() +
   scale_fill_manual(values = terrain.colors(3)) + 
   coord_quickmap()
 
+# I was thinking we could get fancy and have one color
+# for each unique value, but that would be ridic.
+# this takes long enough
+# AND it doesn't work that way
+ggplot() +
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+                                       fill = fct_elevation)) + 
+  scale_fill_manual(values = terrain.colors(50)) + 
+  coord_quickmap()
+
+
+
 # save your colors in an object for re-use
 # and add a title to the legend
 my_col <- terrain.colors(3)
@@ -62,6 +74,17 @@ ggplot() +
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, name = "Elevation") + 
   coord_quickmap()
+
+# this one's not complete in the lesson: x and y labels:
+ggplot() +
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+                                       fill = fct_elevation_2)) + 
+  scale_fill_manual(values = my_col, 
+                    name="Elevation") + 
+  xlab("Easting") + 
+  ylab("Northing") +
+  coord_quickmap()
+
 
 # challenge plot
 HARV_DSM_df <- HARV_DSM_df  %>%
