@@ -72,6 +72,8 @@ max(HARV_CHM_ov_df$layer, na.rm = TRUE)
 max(HARV_CHM_df$layer, na.rm = TRUE)
 
 # save our work
+# this object name might be wrong 
+# in the lesson!
 writeRaster(CHM_ov_HARV, "HARV_CHM.tiff",
             format="GTiff",
             overwrite=TRUE,
