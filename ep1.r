@@ -1,4 +1,5 @@
 # re-writing for the terra-instance of the lesson
+#kristi test
 
 # library(raster)
 # library(rgdal)
