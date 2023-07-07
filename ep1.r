@@ -46,7 +46,6 @@ ggplot() +
 
 crs(DSM_HARV)
 
-################## left off here ##########
 # calculating maxes and mins
 minmax(DSM_HARV)
 
@@ -57,7 +56,7 @@ max(values(DSM_HARV))
 # deal with NA's
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Altitude)) +
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Elevation)) +
   scale_fill_viridis_c(na.value = 'deeppink') +
   coord_quickmap()
 
