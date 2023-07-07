@@ -68,6 +68,7 @@ summary(DSM_HARV_df)
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
 
+#### Kristi edit up to here: What is the new 'reclassify'? I ran 75 and it says it doesn't exist
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
