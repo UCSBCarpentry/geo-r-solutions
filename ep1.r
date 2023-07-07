@@ -9,15 +9,15 @@ library(terra)
 # lesson text says we'll use sf in this episode
 # but I don't think so
 
-describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV_info <- capture.output(
-  describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+  describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 )
 
 
 DSM_HARV <- 
-  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV
 
