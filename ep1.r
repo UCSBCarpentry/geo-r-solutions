@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 # re-writing for the terra/sf-instance of the lesson
+=======
+# re-writing for the terra-instance of the lesson
+#kristi test
+>>>>>>> 444aee627d0fb35060cf41793065cb7fcc98f847
 
 # library(raster)
 # library(rgdal)
@@ -68,6 +73,7 @@ summary(DSM_HARV_df)
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
 
+#### Kristi edit up to here: What is the new 'reclassify'? I ran 75 and it says it doesn't exist
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
