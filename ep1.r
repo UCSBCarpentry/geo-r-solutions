@@ -70,15 +70,11 @@ summary(DSM_HARV_df)
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
 
-#### Kristi edit up to here: What is the new 'reclassify'? I ran 75 and it says it doesn't exist
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
 DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L), include.lowest = TRUE)
-#unknown what terra has changed 'reclassify' function into.
-#Error in function(classes,fdef,mtable):
-#         unable to find an inherited method for function reclassify for signature "SpatRaster"
-# NVM its classify
+
 # ^^^^^^^^
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
 
@@ -89,6 +85,7 @@ names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 
 str(DSM_highvals)
 
+### Kristi here now. What is annotate's inherited f(x)
 ggplot() +
   geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Elevation)) + 
   scale_fill_viridis_c() + 
