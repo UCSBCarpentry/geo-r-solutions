@@ -78,7 +78,7 @@ DSM_highvals <- reclassify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L),
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
 str(DSM_highvals)
 # change that name again
-names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Altitude'
+names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 
 str(DSM_highvals)
 
