@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-# re-writing for the terra/sf-instance of the lesson
-=======
 # re-writing for the terra-instance of the lesson
-#kristi test
->>>>>>> 444aee627d0fb35060cf41793065cb7fcc98f847
 
 # library(raster)
 # library(rgdal)
