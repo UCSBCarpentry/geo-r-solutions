@@ -83,10 +83,10 @@ names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 str(DSM_highvals)
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Altitude)) + 
+  geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Elevation)) + 
   scale_fill_viridis_c() + 
   # use reclassified raster data as an annotation
-  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Altitude)) +
+  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Elevation)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
 
