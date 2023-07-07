@@ -93,6 +93,10 @@ ggplot() +
   annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Elevation)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
+### Error in annotate()
+##  Unequal parameter lengths: x, y, are fine, fill is empty? 
+##  Tried changing elevation to Harv_dsm but now its all pink
+## I think reclass messed up
 
 # ^^^^^^
 # oddly the error message from this says there's a ton of NA's.
