@@ -11,14 +11,15 @@ library(terra)
 
 getwd()
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV_info <- capture.output(
-  describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+  describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 )
 
 
 DSM_HARV <- 
-  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
+  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV
 
@@ -47,7 +48,6 @@ ggplot() +
 
 crs(DSM_HARV)
 
-################## left off here ##########
 # calculating maxes and mins
 minmax(DSM_HARV)
 
@@ -58,7 +58,7 @@ max(values(DSM_HARV))
 # deal with NA's
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Altitude)) +
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Elevation)) +
   scale_fill_viridis_c(na.value = 'deeppink') +
   coord_quickmap()
 
@@ -70,6 +70,7 @@ summary(DSM_HARV_df)
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
 
+#### Kristi edit up to here: What is the new 'reclassify'? I ran 75 and it says it doesn't exist
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
@@ -80,15 +81,15 @@ DSM_highvals <- reclassify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L),
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
 str(DSM_highvals)
 # change that name again
-names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Altitude'
+names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 
 str(DSM_highvals)
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Altitude)) + 
+  geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Elevation)) + 
   scale_fill_viridis_c() + 
   # use reclassified raster data as an annotation
-  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Altitude)) +
+  annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Elevation)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
 
