@@ -5,12 +5,18 @@ library(rgdal)
 library(ggplot2)
 library(dplyr)
 
-# our existing dataframe
-HARV_DSM_df
 
+DSM_HARV <- 
+  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
+
+# our existing dataframe
+DSM_HARV_df
+
+## Kristi stop here def something fishy with elevation
 # mutate into bins
-HARV_DSM_df <- HARV_DSM_df %>%
-  mutate(fct_elevation = cut(Altitude, breaks = 3))
+DSM_HARV_df<- DSM_HARV_df %>%
+  mutate(fct_elevation = cut(Elevation, breaks = 3))
 
 ggplot() +
   geom_bar(data = HARV_DSM_df, aes(fct_elevation))
