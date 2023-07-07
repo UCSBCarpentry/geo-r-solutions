@@ -1,4 +1,4 @@
-# re-writing for the terra-instance of the lesson
+# re-writing for the terra/sf-instance of the lesson
 
 # library(raster)
 # library(rgdal)
