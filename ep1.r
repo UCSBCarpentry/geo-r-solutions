@@ -9,6 +9,7 @@ library(terra)
 # lesson text says we'll use sf in this episode
 # but I don't think so
 
+getwd()
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
 
 DSM_HARV_info <- capture.output(
