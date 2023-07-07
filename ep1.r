@@ -78,6 +78,7 @@ DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L), i
 # ^^^^^^^^
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
 
+### here the elevation isn't being replaced correctly and I'm not sure where to fix
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
 str(DSM_highvals)
 # change that name again
@@ -85,7 +86,6 @@ names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 
 str(DSM_highvals)
 
-### Kristi here now. What is annotate's inherited f(x)
 ggplot() +
   geom_raster(data = DSM_HARV_df, aes(x = x, y = y, fill = Elevation)) + 
   scale_fill_viridis_c() + 
@@ -106,10 +106,11 @@ ggplot() +
 summary(DSM_highvals)
 
 ggplot() +
-  geom_histogram(data = DSM_HARV_df, aes(Altitude))
+  geom_histogram(data = DSM_HARV_df, aes(Elevation))
 
 # skipped making more bins.
 
 # Challenge
-# geting info about another raster
-GDALinfo("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVhill.tif")
+# getting info about another raster
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
+### GDALinfor replaced with "describe" 
