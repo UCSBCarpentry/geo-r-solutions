@@ -1,7 +1,7 @@
 # re-writing for the terra-instance of the lesson
 
-# library(raster)
-# library(rgdal)
+library(raster)
+library(rgdal)
 library(ggplot2)
 library(dplyr)
 library(terra)
@@ -10,7 +10,6 @@ library(terra)
 # but I don't think so
 
 getwd()
-describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/DSM_HARVCrop.tif")
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV_info <- capture.output(
@@ -38,6 +37,7 @@ str(DSM_HARV_df)
 # change the name of the column to better reflect what it is:
 # this isn't in the lesson
 names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
+
 
 str(DSM_HARV_df)
 
@@ -74,7 +74,11 @@ summary(DSM_HARV)
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
-DSM_highvals <- reclassify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L), include.lowest = TRUE)
+DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L), include.lowest = TRUE)
+#unknown what terra has changed 'reclassify' function into.
+#Error in function(classes,fdef,mtable):
+#         unable to find an inherited method for function reclassify for signature "SpatRaster"
+# NVM its classify
 # ^^^^^^^^
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
 
