@@ -63,12 +63,11 @@ ggplot() +
   coord_quickmap()
 
 #check if there are actually any NA's
+#A few ways: 
 any(is.na(DSM_HARV_df$Elevation))
 
 # no value = -9999
 DSM_HARV_info
-
-summary(DSM_HARV_df)
 
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
@@ -87,17 +86,21 @@ ggplot() +
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
 # here's the code:
-DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA_integer_, 400, 420, 1L), include.lowest = TRUE)
+# The line below is throwing me off: 
+DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA, 420, 1L), include.lowest = TRUE)
 
 # ^^^^^^^^
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
+# originally DSM_highvals <- reclassify(DSM_HARV, rcl=c(0,400,Na_Integer_,420,1L), include.lowest =TRUE)
+
 
 ### here the elevation isn't being replaced correctly and I'm not sure where to fix
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
 str(DSM_highvals)
-# change that name again
-names(DSM_highvals)[names(DSM_highvals) == 'DSM_HARVCrop'] <- 'Elevation'
 
+
+# change that name again
+names(DSM_highvals)[names(DSM_highvals) == 'HARV_dsmCrop'] <- 'Elevation'
 str(DSM_highvals)
 
 ggplot() +
@@ -107,9 +110,9 @@ ggplot() +
   annotate(geom = 'raster', x = DSM_highvals$x, y = DSM_highvals$y, fill = scales::colour_ramp('deeppink')(DSM_highvals$Elevation)) +
   ggtitle("Elevation Data", subtitle = "Highlighting values > 400m") +
   coord_quickmap()
-### Error in annotate()
+### Error in reclass for sure
 ##  Unequal parameter lengths: x, y, are fine, fill is empty? 
-##  Tried changing elevation to Harv_dsm but now its all pink
+##  now its all pink
 ## I think reclass messed up
 
 # ^^^^^^
