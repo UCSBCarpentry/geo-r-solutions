@@ -56,11 +56,14 @@ max(values(DSM_HARV))
 
 
 # deal with NA's
-
+# I think this ggplot should go after any(is.na) and summary()
 ggplot() +
   geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Elevation)) +
   scale_fill_viridis_c(na.value = 'deeppink') +
   coord_quickmap()
+
+#check if there are actually any NA's
+any(is.na(DSM_HARV_df$Elevation))
 
 # no value = -9999
 DSM_HARV_info
@@ -69,6 +72,17 @@ summary(DSM_HARV_df)
 
 # this shows our current raster doesn't have any.
 summary(DSM_HARV)
+
+### To get a similar image in the lesson example
+# Load image into dataframe
+HARV_DTM_df <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhill_WGS84.tif") %>% 
+  as.data.frame(xy = TRUE)
+
+ggplot() +
+  geom_raster(data = HARV_DTM_df , aes(x = x, y = y, fill = HARV_DTMhill_WGS84)) +
+  scale_fill_viridis_c(na.value = 'deeppink') +
+  coord_quickmap()
+
 
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
