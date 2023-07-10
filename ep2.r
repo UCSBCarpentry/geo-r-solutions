@@ -13,7 +13,7 @@ DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 # our existing dataframe
 DSM_HARV_df
 
-## Kristi stop here def something fishy with elevation
+names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # mutate into bins
 DSM_HARV_df<- DSM_HARV_df %>%
   mutate(fct_elevation = cut(Elevation, breaks = 3))
@@ -21,32 +21,33 @@ DSM_HARV_df<- DSM_HARV_df %>%
 ggplot() +
   geom_bar(data = HARV_DSM_df, aes(fct_elevation))
 
-unique(HARV_DSM_df$fct_elevation)
+unique(DSM_HARV_df$fct_elevation)
 
-HARV_DSM_df %>%
+DSM_HARV_df %>%
   group_by(fct_elevation) %>%
   count()
 
 # mutate into specified bins
 custom_bins <- c(300, 350, 400, 450)
 
-HARV_DSM_df <- HARV_DSM_df %>%
-  mutate(fct_elevation_2 = cut(Altitude, breaks = custom_bins))
+# throwing error but it did mutate -KL
+DSM_HARV_df <- DSM_HARV_df %>%
+  mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
-unique(HARV_DSM_df$fct_elevation_2)
+unique(DSM_HARV_df$fct_elevation_2)
 
 # this again highlights the over 400.
 ggplot() +
-  geom_bar(data = HARV_DSM_df, aes(fct_elevation_2))
+  geom_bar(data = DSM_HARV_df, aes(fct_elevation_2))
 
 # and get the count of pixels in each bin
-HARV_DSM_df %>%
+DSM_HARV_df %>%
   group_by(fct_elevation_2) %>%
   count()
 
 # map it
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y, fill = fct_elevation_2)) + 
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = fct_elevation_2)) + 
   coord_quickmap()
 
 # that default color scheme doesn't work so well.
@@ -54,7 +55,7 @@ ggplot() +
 terrain.colors(3)
 
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = terrain.colors(3)) + 
   coord_quickmap()
@@ -64,11 +65,12 @@ ggplot() +
 # this takes long enough
 # AND it doesn't work that way
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation)) + 
   scale_fill_manual(values = terrain.colors(50)) + 
   coord_quickmap()
-
+#^this isn't supposed to be all green right?
+#isn't fill supposed to be fct_elevation_2?
 
 
 # save your colors in an object for re-use
@@ -76,14 +78,14 @@ ggplot() +
 my_col <- terrain.colors(3)
 
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, name = "Elevation") + 
   coord_quickmap()
 
 # this one's not complete in the lesson: x and y labels:
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, 
                     name="Elevation") + 
@@ -91,7 +93,7 @@ ggplot() +
   ylab("Northing") +
   coord_quickmap()
 
-
+#Kristi up to here
 # challenge plot
 HARV_DSM_df <- HARV_DSM_df  %>%
   mutate(fct_elevation_6 = cut(Altitude, breaks = 6)) 
