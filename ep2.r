@@ -93,15 +93,15 @@ ggplot() +
   ylab("Northing") +
   coord_quickmap()
 
-#Kristi up to here
+
 # challenge plot
-HARV_DSM_df <- HARV_DSM_df  %>%
-  mutate(fct_elevation_6 = cut(Altitude, breaks = 6)) 
+DSM_HARV_df <- DSM_HARV_df  %>%
+  mutate(fct_elevation_6 = cut(Elevation, breaks = 6)) 
 
 my_col <- terrain.colors(6)
 
 ggplot() +
-  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation_6)) + 
   scale_fill_manual(values = my_col, name = "Elevation") + 
   ggtitle("Classified Elevation Map - NEON Harvard Forest Field Site") +
@@ -128,9 +128,9 @@ ggplot() +
 # the top layer needs an alpha if you hope to see it.
 # plots build in the order you call the geom's
 ggplot() +
-  geom_raster(data = HARV_DSM_df , 
+  geom_raster(data = DSM_HARV_df , 
               aes(x = x, y = y, 
-                  fill = Altitude)) + 
+                  fill = Elevation)) + 
   geom_raster(data = HARV_hill_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DSMhill)) +  
@@ -139,7 +139,7 @@ ggplot() +
   ggtitle("Elevation with hillshade") +
   coord_quickmap()
 
-
+# Kristi to here now
 ###################################
 # challenge map: do it with SJER
 # CREATE DSM MAPS
