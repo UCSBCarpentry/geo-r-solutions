@@ -139,7 +139,7 @@ ggplot() +
   ggtitle("Elevation with hillshade") +
   coord_quickmap()
 
-# Kristi to here now
+
 ###################################
 # challenge map: do it with SJER
 # CREATE DSM MAPS
@@ -177,7 +177,7 @@ ggplot() +
   ggtitle("DSM with Hillshade") +
   coord_quickmap()
 
-
+# Kristi here now
 # CREATE DTM MAP
 # import DTM
 # think: T = Treetops.
