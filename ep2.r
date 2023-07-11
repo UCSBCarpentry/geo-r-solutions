@@ -6,12 +6,12 @@ library(ggplot2)
 library(dplyr)
 
 
-DSM_HARV <- 
+HARV_DSM <- 
   raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
+HARV_DSM_df <- as.data.frame(HARV_DSM, xy = TRUE)
 
 # our existing dataframe
-DSM_HARV_df
+HARV_DSM_df
 
 names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # mutate into bins
@@ -31,7 +31,7 @@ HARV_DSM_df %>%
 custom_bins <- c(300, 350, 400, 450)
 
 # throwing error but it did mutate -KL
-HARV_DSM_df <- DSM_HARV_df %>%
+HARV_DSM_df <- HARV_DSM_df %>%
   mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
 unique(HARV_DSM_df$fct_elevation_2)
@@ -85,7 +85,7 @@ ggplot() +
 
 # this one's not complete in the lesson: x and y labels:
 ggplot() +
-  geom_raster(data = AHRV_DSM_df , aes(x = x, y = y,
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, 
                     name="Elevation") + 
@@ -177,24 +177,24 @@ ggplot() +
   ggtitle("DSM with Hillshade") +
   coord_quickmap()
 
-# Kristi here now
+
 # CREATE DTM MAP
 # import DTM
 # think: T = Treetops.
-DTM_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
-DTM_SJER_df <- as.data.frame(DTM_SJER, xy = TRUE)
+SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
+SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
 
 # DTM Hillshade
-DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
-DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
+SJER_DTM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+SJER_DTM_hill_df <- as.data.frame(SJER_DTM_hill, xy = TRUE)
 
 ggplot() +
-  geom_raster(data = DTM_SJER_df ,
+  geom_raster(data = SJER_DTM_df ,
               aes(x = x, y = y,
                   fill = SJER_dtmCrop,
                   alpha = 2.0)
   ) +
-  geom_raster(data = DTM_hill_SJER_df,
+  geom_raster(data = SJER_DTM_hill_df,
               aes(x = x, y = y,
                   alpha = SJER_dtmHill)
   ) +
@@ -216,8 +216,8 @@ SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.t
 SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
 
 # DTM Hillshade
-DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
-DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
+SJER_DTM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+SJER_DTM_hill_df <- as.data.frame(SJER_DTM_hill, xy = TRUE)
 
 ggplot() +
   geom_raster(data = SJER_DTM_df ,
@@ -225,7 +225,7 @@ ggplot() +
                   fill = SJER_dtmCrop,
                   alpha = 2.0)
   ) +
-  geom_raster(data = DTM_hill_SJER_df,
+  geom_raster(data = SJER_DTM_hill_df,
               aes(x = x, y = y,
                   alpha = SJER_dtmHill)
   ) +
