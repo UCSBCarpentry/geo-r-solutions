@@ -7,23 +7,23 @@ library(dplyr)
 
 
 DSM_HARV <- 
-  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+  raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 
 # our existing dataframe
 DSM_HARV_df
 
-names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
+names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # mutate into bins
-DSM_HARV_df<- DSM_HARV_df %>%
+HARV_DSM_df<- HARV_DSM_df %>%
   mutate(fct_elevation = cut(Elevation, breaks = 3))
 
 ggplot() +
   geom_bar(data = HARV_DSM_df, aes(fct_elevation))
 
-unique(DSM_HARV_df$fct_elevation)
+unique(HARV_DSM_df$fct_elevation)
 
-DSM_HARV_df %>%
+HARV_DSM_df %>%
   group_by(fct_elevation) %>%
   count()
 
@@ -31,23 +31,23 @@ DSM_HARV_df %>%
 custom_bins <- c(300, 350, 400, 450)
 
 # throwing error but it did mutate -KL
-DSM_HARV_df <- DSM_HARV_df %>%
+HARV_DSM_df <- DSM_HARV_df %>%
   mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
-unique(DSM_HARV_df$fct_elevation_2)
+unique(HARV_DSM_df$fct_elevation_2)
 
 # this again highlights the over 400.
 ggplot() +
-  geom_bar(data = DSM_HARV_df, aes(fct_elevation_2))
+  geom_bar(data = HARV_DSM_df, aes(fct_elevation_2))
 
 # and get the count of pixels in each bin
-DSM_HARV_df %>%
+HARV_DSM_df %>%
   group_by(fct_elevation_2) %>%
   count()
 
 # map it
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = fct_elevation_2)) + 
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y, fill = fct_elevation_2)) + 
   coord_quickmap()
 
 # that default color scheme doesn't work so well.
@@ -55,7 +55,7 @@ ggplot() +
 terrain.colors(3)
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = terrain.colors(3)) + 
   coord_quickmap()
@@ -65,7 +65,7 @@ ggplot() +
 # this takes long enough
 # AND it doesn't work that way
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation)) + 
   scale_fill_manual(values = terrain.colors(50)) + 
   coord_quickmap()
@@ -78,14 +78,14 @@ ggplot() +
 my_col <- terrain.colors(3)
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, name = "Elevation") + 
   coord_quickmap()
 
 # this one's not complete in the lesson: x and y labels:
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+  geom_raster(data = AHRV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
   scale_fill_manual(values = my_col, 
                     name="Elevation") + 
@@ -95,13 +95,13 @@ ggplot() +
 
 
 # challenge plot
-DSM_HARV_df <- DSM_HARV_df  %>%
+HARV_DSM_df <- HARV_DSM_df  %>%
   mutate(fct_elevation_6 = cut(Elevation, breaks = 6)) 
 
 my_col <- terrain.colors(6)
 
 ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
+  geom_raster(data = HARV_DSM_df , aes(x = x, y = y,
                                        fill = fct_elevation_6)) + 
   scale_fill_manual(values = my_col, name = "Elevation") + 
   ggtitle("Classified Elevation Map - NEON Harvard Forest Field Site") +
@@ -128,7 +128,7 @@ ggplot() +
 # the top layer needs an alpha if you hope to see it.
 # plots build in the order you call the geom's
 ggplot() +
-  geom_raster(data = DSM_HARV_df , 
+  geom_raster(data = HARV_DSM_df , 
               aes(x = x, y = y, 
                   fill = Elevation)) + 
   geom_raster(data = HARV_hill_df, 
