@@ -91,6 +91,7 @@ ggplot() +
 # but if we want to see unique values,
 # we have to get that column to be a factor
 levels(HARV_lines$TYPE)
+#this says output NULL? (not the second time around, but flagging anyway)
 
 # now we can see that we need 4 colors
 HARV_lines$TYPE <- factor(HARV_lines$TYPE)
@@ -140,7 +141,7 @@ ggplot() +
   geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) +
   scale_color_manual(values = road_colors) + 
   labs(color = 'Road Type') +
-  theme(legend.text = element_text(size = 20), 
+  theme(legend.text = element_text(size = 14), 
         legend.box.background = element_rect(size = 1)) + 
   ggtitle("NEON Harvard Forest Field Site", 
           subtitle = "Roads & Trails - Modified Legend") +
@@ -153,7 +154,7 @@ ggplot() +
   geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) + 
   scale_color_manual(values = new_colors) +
   labs(color = 'Road Type') +
-  theme(legend.text = element_text(size = 20), 
+  theme(legend.text = element_text(size = 14), 
         legend.box.background = element_rect(size = 1)) + 
   ggtitle("NEON Harvard Forest Field Site", 
           subtitle = "Roads & Trails - Pretty Colors") +
@@ -161,7 +162,8 @@ ggplot() +
 
 
 # bicycle challenge
-class(HARV_lines$BicyclesHorse)
+class(HARV_lines$BIKEHORSE)
+#output is NULL?is it supposed to be BIKEHORSE instead of BicyclesHorse?
 
 # same iss ue as roadtype
 levels(HARV_lines$BIKEHORSE)
