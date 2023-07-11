@@ -209,6 +209,7 @@ ggplot() +
   ggtitle("DTM with Hillshade") +
   coord_quickmap()
 
+#Is this a duplicate of ^?
 # CREATE DTM MAP
 # import DTM
 SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
