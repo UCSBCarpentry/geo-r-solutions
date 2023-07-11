@@ -2,6 +2,7 @@
 # vector data!
 
 # our first new library in a while
+#install.packages("sf")
 library(sf)
 
 # vector files are shapefiles
