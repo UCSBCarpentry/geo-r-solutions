@@ -1,5 +1,11 @@
 # ep 4
 
+#need to reload HARV_DSM
+HARV_DSM <- 
+  raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+HARV_DSM_df <- as.data.frame(DSM_HARV, xy = TRUE)
+
+names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # we should already have dataframes for 
 # HARV_DTM and HARV_DSM
 
@@ -15,7 +21,7 @@ ggplot() +
 # Think "Bare" surface
 ggplot() +
   geom_raster(data = HARV_DSM_df , 
-              aes(x = x, y = y, fill = Altitude)) +
+              aes(x = x, y = y, fill = Elevation)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
 
@@ -35,6 +41,7 @@ ggplot(HARV_CHM_df) +
 
 # challenge
 min(HARV_CHM_df$layer, na.rm = TRUE)
+
 ggplot(HARV_CHM_df) +
   geom_histogram(aes(layer))
 
@@ -74,7 +81,8 @@ max(HARV_CHM_df$layer, na.rm = TRUE)
 # save our work
 # this object name might be wrong 
 # in the lesson!
-writeRaster(CHM_ov_HARV, "HARV_CHM.tiff",
+writeRaster(HARV_CHM_ov, "HARV_CHM.tiff",
             format="GTiff",
             overwrite=TRUE,
             NAflag=-9999)
+#do we want to make an outputs folder? 

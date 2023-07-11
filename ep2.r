@@ -5,18 +5,12 @@ library(rgdal)
 library(ggplot2)
 library(dplyr)
 
-
-HARV_DSM <- 
-  raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-HARV_DSM_df <- as.data.frame(HARV_DSM, xy = TRUE)
-
 # our existing dataframe
 HARV_DSM_df
 
-names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # mutate into bins
-HARV_DSM_df<- HARV_DSM_df %>%
-  mutate(fct_elevation = cut(Elevation, breaks = 3))
+HARV_DSM_df <- HARV_DSM_df %>%
+  mutate(fct_elevation = cut(Altitude, breaks = 3))
 
 ggplot() +
   geom_bar(data = HARV_DSM_df, aes(fct_elevation))
@@ -30,9 +24,8 @@ HARV_DSM_df %>%
 # mutate into specified bins
 custom_bins <- c(300, 350, 400, 450)
 
-# throwing error but it did mutate -KL
 HARV_DSM_df <- HARV_DSM_df %>%
-  mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
+  mutate(fct_elevation_2 = cut(Altitude, breaks = custom_bins))
 
 unique(HARV_DSM_df$fct_elevation_2)
 
@@ -69,8 +62,7 @@ ggplot() +
                                        fill = fct_elevation)) + 
   scale_fill_manual(values = terrain.colors(50)) + 
   coord_quickmap()
-#^this isn't supposed to be all green right?
-#isn't fill supposed to be fct_elevation_2?
+
 
 
 # save your colors in an object for re-use
@@ -96,7 +88,7 @@ ggplot() +
 
 # challenge plot
 HARV_DSM_df <- HARV_DSM_df  %>%
-  mutate(fct_elevation_6 = cut(Elevation, breaks = 6)) 
+  mutate(fct_elevation_6 = cut(Altitude, breaks = 6)) 
 
 my_col <- terrain.colors(6)
 
@@ -130,7 +122,7 @@ ggplot() +
 ggplot() +
   geom_raster(data = HARV_DSM_df , 
               aes(x = x, y = y, 
-                  fill = Elevation)) + 
+                  fill = Altitude)) + 
   geom_raster(data = HARV_hill_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DSMhill)) +  
@@ -181,20 +173,20 @@ ggplot() +
 # CREATE DTM MAP
 # import DTM
 # think: T = Treetops.
-SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
-SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
+DTM_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
+DTM_SJER_df <- as.data.frame(DTM_SJER, xy = TRUE)
 
 # DTM Hillshade
-SJER_DTM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
-SJER_DTM_hill_df <- as.data.frame(SJER_DTM_hill, xy = TRUE)
+DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
 
 ggplot() +
-  geom_raster(data = SJER_DTM_df ,
+  geom_raster(data = DTM_SJER_df ,
               aes(x = x, y = y,
                   fill = SJER_dtmCrop,
                   alpha = 2.0)
   ) +
-  geom_raster(data = SJER_DTM_hill_df,
+  geom_raster(data = DTM_hill_SJER_df,
               aes(x = x, y = y,
                   alpha = SJER_dtmHill)
   ) +
@@ -209,15 +201,14 @@ ggplot() +
   ggtitle("DTM with Hillshade") +
   coord_quickmap()
 
-#Is this a duplicate of ^?
 # CREATE DTM MAP
 # import DTM
 SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
 
 # DTM Hillshade
-SJER_DTM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
-SJER_DTM_hill_df <- as.data.frame(SJER_DTM_hill, xy = TRUE)
+DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
 
 ggplot() +
   geom_raster(data = SJER_DTM_df ,
@@ -225,7 +216,7 @@ ggplot() +
                   fill = SJER_dtmCrop,
                   alpha = 2.0)
   ) +
-  geom_raster(data = SJER_DTM_hill_df,
+  geom_raster(data = DTM_hill_SJER_df,
               aes(x = x, y = y,
                   alpha = SJER_dtmHill)
   ) +

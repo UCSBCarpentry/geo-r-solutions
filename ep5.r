@@ -6,9 +6,11 @@ HARV_RGB_band1 <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/
 
 HARV_RGB_band1_df  <- as.data.frame(HARV_RGB_band1, xy = TRUE)
 
+#where did HARV_RGB_Ortho come from?
+#is it HARV_RGB_Ortho_1?
 ggplot() +
   geom_raster(data = HARV_RGB_band1_df,
-              aes(x = x, y = y, alpha = HARV_RGB_Ortho)) + 
+              aes(x = x, y = y, alpha = HARV_RGB_Ortho_1)) + 
   coord_quickmap()
 
 HARV_RGB_band1
@@ -20,7 +22,7 @@ HARV_RGB_band2_df <- as.data.frame(HARV_RGB_band2, xy = TRUE)
 # similarly boring and familiar plot
 ggplot() +
   geom_raster(data = HARV_RGB_band2_df,
-              aes(x = x, y = y, alpha = HARV_RGB_Ortho)) + 
+              aes(x = x, y = y, alpha = HARV_RGB_Ortho_1)) + 
   coord_equal()
 
 # multi-bands get called as 'stacks'
