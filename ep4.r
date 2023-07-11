@@ -3,7 +3,7 @@
 #need to reload HARV_DSM
 HARV_DSM <- 
   raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-HARV_DSM_df <- as.data.frame(DSM_HARV, xy = TRUE)
+HARV_DSM_df <- as.data.frame(HARV_DSM, xy = TRUE)
 
 names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # we should already have dataframes for 
