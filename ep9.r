@@ -58,3 +58,22 @@ ggplot() +
   coord_sf()
 
 ## Challenge DIY multiple layers of spatial data 
+## 1. Import North Eastern United States boundary layer 
+## 2. Layer the Tower onto the plot 
+## 3. Add a title 
+## 4. Add a legend that shows the state boundary and the tower location point
+
+NE.States.Boundary.US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/Boundary-US-State-NEast.shp") %>%
+  st_zm()
+
+ggplot() +
+  geom_sf(data = NE.States.Boundary.US, aes(color ="color"),
+          show.legend = "line") +
+  scale_color_manual(name = "", labels = "State Boundary",
+                     values = c("color" = "gray18")) +
+  geom_sf(data = HARV_points, aes(shape = "shape"), color = "purple") +
+  scale_shape_manual(name = "", labels = "Fisher Tower",
+                     values = c("shape" = 19)) +
+  ggtitle("Fisher Tower Harvard Forest") +
+  theme(legend.background = element_rect(color = NA)) +
+  coord_sf()
