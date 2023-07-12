@@ -1,7 +1,6 @@
 # helpful R command to see all the objects in memory
 ls()
 
-
 # we made a DTM for SJER. Now let's make one for HARV
 HARV_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
 HARV_DTM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhill_WGS84.tif")
