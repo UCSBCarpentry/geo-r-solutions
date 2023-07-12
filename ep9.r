@@ -26,4 +26,35 @@ ggplot() +
 # Kristi comment, I don't think the country border is any darker or thicker
 # okay so after some testing, the shapefiles aren't alpha so making one darker or bolder
 # won't do anything. The state boundary file is masking the country boundary.
+# update: its also not working in the lesson 
 
+# Add CRS to each object
+st_crs(HARV_points)$proj4string
+# rename point_HARV in lesson to HARV_points
+
+#Check the CRS of the state and country boundary objects:
+st_crs(state_boundary_US)$proj4string
+
+st_crs(country_boundary_US)$proj4string
+
+## CRS Units - View Object Extent
+# first look at the extent of the study site at our tower location
+st_bbox(HARV_points)
+# then the state boundary data
+st_bbox(state_boundary_US)
+
+#Notice they are quite different. One is in larger numbers whil the other is in smaller numbers
+#Harv points is represented in UTM, while the state boundary is in decimal degrees
+
+#Despite the CRS difference, ggplot can plot them together
+#Automatically converts all object to the same CRS before plotting. 
+#Plot US State, Boundary, and Harv_points together
+
+ggplot() +
+  geom_sf(data = country_boundary_US, size = 2, color = "gray18") +
+  geom_sf(data = state_boundary_US, color = "gray40") +
+  geom_sf(data = HARV_points, shape = 19, color = "purple") +
+  ggtitle("Map of Contiguous US State Boundaries") +
+  coord_sf()
+
+## Challenge DIY multiple layers of spatial data 
