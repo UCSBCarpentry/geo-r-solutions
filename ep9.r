@@ -24,4 +24,6 @@ ggplot() +
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
 # Kristi comment, I don't think the country border is any darker or thicker
+# okay so after some testing, the shapefiles aren't alpha so making one darker or bolder
+# won't do anything. The state boundary file is masking the country boundary.
 
