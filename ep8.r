@@ -1,5 +1,5 @@
 # ep 8
-# vecotr overlays!
+# vector overlays!
 
 # make sure we have the needed libraries
 library(sf)
@@ -104,9 +104,12 @@ ggplot() +
   coord_sf()
 
 # this doesn't match the lesson
+names(HARV_CHM_df)[names(HARV_CHM_df) == 'layer'] <- 'Elevation'
 # the 2 names in the raster line were wrong
+# is it not CHM? idk where fill = canopy_discrete is from either...
+# NVM fixed the raster lines, last time CHM data used, episode 4.
 ggplot() +
-  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = canopy_discrete)) +
+  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = Elevation)) +
   geom_sf(data = HARV_lines, color = "black") +
   geom_sf(data = aoi_boundary_HARV, color = "grey20", size = 1) +
   geom_sf(data = HARV_points, pch = 8) +
