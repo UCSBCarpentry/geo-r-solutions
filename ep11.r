@@ -30,7 +30,7 @@ state_boundary_US <- st_read(
 # Its more efficient to crop a raster to the extent of our study area to reduce file sizes 
 
 # Using the Crop() function.
-# R will use ht eextent of the spatial object as the cropping boundary
+# R will use the extent of the spatial object as the cropping boundary
 
 #Need to make sure layers is replaced with elevation in CHM_df layer
 ggplot() +
@@ -94,3 +94,27 @@ ggplot() +
   coord_sf()
 
 # Defining a new extent 
+# use the ext() function to define an extent for a cropping boundary
+
+new_extent <- extent(732161.2, 732238.7, 4713249, 4713333)
+class(new_extent)
+# where did this extent come from?
+# also not working. Used extent from raster package instead of ext from terra
+
+# Output:
+# [1]Extent
+# attr("package")
+# [1]raster
+
+
+HARV_CHM_manual_cropped <- crop(x = HARV_CHM, y = new_extent)
+# error: cant get extent object from argument y
+
+HARV_CHM_manual_cropped_df <- as.data.frame(HARV_CHM_manual_cropped, xy = TRUE)
+
+ggplot() +
+  geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
+  geom_raster(data = HARV_CHM_manual_cropped_df,
+              aes(x = x, y = y, fill = HARV_chmCrop)) +
+  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
+  coord_sf()
