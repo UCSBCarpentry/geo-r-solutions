@@ -118,3 +118,25 @@ ggplot() +
               aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   coord_sf()
+
+# Extract raster pixels using vector polygons
+# extract() requires
+# the raster that we wish to extract from
+# the vector layer with the polygons that we want to use as boundar(ies)
+
+#extract canopy values located within the aoi_boundary polygon
+tree_height <- extract(x = HARV_CHM, y = aoi_boundary_HARV, raw = FALSE)
+
+#str(tree_height_df)
+#missing dataframe 
+tree_height_df <- as.data.frame(tree_height, xy = TRUE)
+str(tree_height_df)
+
+#even with converting to dataframe, only 1 variable, not two like in the lesson
+#reloaded new chm image but still only 1 variable? 
+
+ggplot() +
+  geom_histogram(data = tree_height, aes(x = HARV_chmCrop)) +
+  ggtitle("Histogram of CHM Height Values (m)") +
+  xlab("Tree Height") +
+  ylab("Frequency of Pixels")
