@@ -118,16 +118,16 @@ DSM_hill_UTMZ18N_SJER<- project(DSM_hill_SJER_WGS,
                                 res = 1)
 
 # convert to data.frames
-SJER_DSM_df <- as.data.frame(SJER_DSM, xy = TRUE)
+DSM_SJER_df <- as.data.frame(DSM_SJER, xy = TRUE)
 
-SJER_DSM_hill_df <- as.data.frame(SJER_DSM_hill_reprojected, xy = TRUE)
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_UTMZ18N_SJER, xy = TRUE)
 
 ggplot() +
-  geom_raster(data = SJER_DSM_hill_df, 
+  geom_raster(data = DSM_hill_SJER_df, 
               aes(x = x, y = y, 
                   alpha = SJER_DSMhill_WGS84)
   ) +
-  geom_raster(data = SJER_DSM_df, 
+  geom_raster(data = DSM_SJER_df, 
               aes(x = x, y = y, 
                   fill = SJER_dsmCrop, alpha = 0.8)
   ) + 
