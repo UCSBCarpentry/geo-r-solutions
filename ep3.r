@@ -37,8 +37,8 @@ ggplot() +
 ######################################
 # we could have figured this out first
 # (read the first line)
-crs(HARV_DTM)
-crs(HARV_DTM_hill)
+crs(HARV_DTM, parse = TRUE)
+crs(HARV_DTM_hill, parse = TRUE)
 
 (HARV_DTM)
 (HARV_DTM_hill)
@@ -47,16 +47,25 @@ crs(HARV_DTM_hill)
 # project can be a copy and paste operation
 # projectRaster(RasterObject, crs = CRSToReprojectTo)
 
-HARV_DTM_hill_reprojected <- projectRaster(HARV_DTM_hill,
-                                           crs = crs(HARV_DTM))
+DTM_hill_UTMZ18N_HARV <- project(HARV_DTM_hill,crs(HARV_DTM))
 
 
-(HARV_DTM_hill_reprojected)
-(HARV_DTM)
+crs(DTM_hill_UTMZ18N_HARV, parse = TRUE)
 
+#compare to before
+crs(HARV_DTM_hill, parse = TRUE)
+
+ext(DTM_hill_UTMZ18N_HARV)
+ext(HARV_DTM_hill)
+
+
+#Raster resolution:
+res(DTM_hill_UTMZ18N_HARV)
+
+res(HARV_DTM)
 
 # this still doesn't work because the EXTENTS don't match
-HARV_DTM_hill_reprojected_df <- as.data.frame(HARV_DTM_hill_reprojected, xy=TRUE)
+DTM_hill_UTMZ18N_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy=TRUE)
 ggplot() +
   geom_raster(data = HARV_DTM_df , 
               aes(x = x, y = y, 
@@ -67,30 +76,23 @@ ggplot() +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
 
-# you can see that
-extent(HARV_DTM_hill_reprojected)
-extent(HARV_DTM_hill)
 
-# easier to determine:
-extent(HARV_DTM_hill_reprojected) == extent(HARV_DTM_hill)
+#tell R to force newly reprojected raster to 1m x 1m resolution
 
-# another thing that doesn't match after reprojection is pixel size
-res(HARV_DTM_hill_reprojected)
-res(HARV_DTM)
+DTM_hill_UTMZ18N_HARV <- project(HARV_DTM_hill,
+                                 crs(HARV_DTM),
+                                 res = res(HARV_DTM))
+res(DTM_hill_UTMZ18N_HARV)
 
-# force them to match
-HARV_DTM_hill_reprojected <- projectRaster(HARV_DTM_hill,
-                                           crs = crs(HARV_DTM),
-                                           res = res(HARV_DTM)) 
 
-# make a dataframe
-HARV_DTM_hill_2_df <- as.data.frame(HARV_DTM_hill_reprojected, xy = TRUE)
+# To plot in ggplot, make a dataframe
+DTM_hill_HARV_2_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy = TRUE)
 
 ggplot() +
   geom_raster(data = HARV_DTM_df , 
               aes(x = x, y = y, 
                   fill = HARV_dtmCrop)) + 
-  geom_raster(data = HARV_DTM_hill_2_df, 
+  geom_raster(data = DTM_hill_HARV_2_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DTMhill_WGS84)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
@@ -101,7 +103,7 @@ ggplot() +
 # to match!
 
 ##############################
-# challenge: make an ovelay for SJER
+# challenge: make an overlay for SJER plotting digital terrain model
 # import DSM
 SJER_DSM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # import DSM hillshade
