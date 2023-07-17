@@ -89,3 +89,33 @@ writeRaster(CHM_ov_HARV, "CHM_HARV.tiff",
             overwrite=TRUE,
             NAflag=-9999)
 #do we want to make an outputs folder? 
+
+## SJER Challenge
+CHM_ov_SJER <- lapp(sds(list(DSM_SJER, DTM_SJER)),
+fun = function(r1, r2){ return(r1 - r2) })
+
+CHM_ov_SJER_df <- as.data.frame(CHM_ov_SJER, xy = TRUE)
+
+ggplot(CHM_ov_SJER_df) +
+  geom_histogram(aes(SJER_dsmCrop))
+
+ggplot() +
+  geom_raster(data = CHM_ov_SJER_df, 
+              aes(x = x, y = y, 
+                  fill = SJER_dsmCrop)
+  ) + 
+  scale_fill_gradientn(name = "Canopy Height", 
+                       colors = terrain.colors(10)) + 
+  coord_quickmap()
+
+#writeRaster(CHM_ov_SJER, "chm_ov_SJER.tiff",
+           # filetype = "GTiff",
+           # overwrite = TRUE,
+           # NAflag = -9999)
+
+#compare plots 
+ggplot(CHM_HARV_df) +
+  geom_histogram(aes(HARV_dsmCrop))
+
+ggplot(CHM_ov_SJER_df) +
+  geom_histogram(aes(SJER_dsmCrop))
