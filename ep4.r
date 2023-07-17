@@ -1,18 +1,18 @@
 # ep 4
 
 #need to reload HARV_DSM
-HARV_DSM <- 
-  raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-HARV_DSM_df <- as.data.frame(HARV_DSM, xy = TRUE)
+DSM_HARV <- 
+  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 
-names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
+names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # we should already have dataframes for 
 # HARV_DTM and HARV_DSM
 
 # Terrain
 # Think "Treetops"
 ggplot() +
-  geom_raster(data = HARV_DTM_df , 
+  geom_raster(data = DTM_HARV_df , 
               aes(x = x, y = y, fill = HARV_dtmCrop)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
@@ -20,24 +20,25 @@ ggplot() +
 # Surface
 # Think "Bare" surface
 ggplot() +
-  geom_raster(data = HARV_DSM_df , 
+  geom_raster(data = DSM_HARV_df , 
               aes(x = x, y = y, fill = Elevation)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
 
 
 # do math to create canopy height model
-HARV_CHM <- HARV_DSM - HARV_DTM
-HARV_CHM_df <- as.data.frame(HARV_CHM, xy = TRUE)
+CHM_HARV <- DSM_HARV - DTM_HARV
+CHM_HARV_df <- as.data.frame(CHM_HARV, xy = TRUE)
 
 ggplot() +
-  geom_raster(data = HARV_CHM_df , 
-              aes(x = x, y = y, fill = layer)) + 
+  geom_raster(data = CHM_HARV_df , 
+              aes(x = x, y = y, fill = HARV_dsmCrop)) + 
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
   coord_quickmap()
 
-ggplot(HARV_CHM_df) +
-  geom_histogram(aes(layer))
+#check distribution of values
+ggplot(CHM_HARV_df) +
+  geom_histogram(aes(HARV_dsmCrop))
 
 # challenge
 min(HARV_CHM_df$layer, na.rm = TRUE)
