@@ -60,16 +60,6 @@ ggplot() +
   scale_fill_manual(values = terrain.colors(3)) + 
   coord_quickmap()
 
-# I was thinking we could get fancy and have one color
-# for each unique value, but that would be ridic.
-# this takes long enough
-# AND it doesn't work that way
-ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
-                                       fill = fct_elevation)) + 
-  scale_fill_manual(values = terrain.colors(50)) + 
-  coord_quickmap()
-
 
 
 # save your colors in an object for re-use
@@ -95,7 +85,7 @@ ggplot() +
 
 # challenge plot
 DSM_HARV_df <- DSM_HARV_df  %>%
-  mutate(fct_elevation_6 = cut(Altitude, breaks = 6)) 
+  mutate(fct_elevation_6 = cut(Elevation, breaks = 6)) 
 
 my_col <- terrain.colors(6)
 
@@ -111,7 +101,7 @@ ggplot() +
 
 # layering rasters
 HARV_hill <-
-  raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
+  rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 
 HARV_hill
 HARV_hill_df <- as.data.frame(HARV_hill, xy = TRUE) 
@@ -120,7 +110,7 @@ str(HARV_hill_df)
 # plot that with no legend
 ggplot() +
   geom_raster(data = HARV_hill_df,
-              aes(x = x, y = y, alpha = DSM_HARVhill)) + 
+              aes(x = x, y = y, alpha = HARV_DSMhill)) + 
   scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
   coord_quickmap()
 
@@ -129,7 +119,7 @@ ggplot() +
 ggplot() +
   geom_raster(data = DSM_HARV_df , 
               aes(x = x, y = y, 
-                  fill = Altitude)) + 
+                  fill = Elevation)) + 
   geom_raster(data = HARV_hill_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DSMhill)) +  
@@ -141,15 +131,19 @@ ggplot() +
 
 ###################################
 # challenge map: do it with SJER
+# these all work, but these aren't the
+# names from the solution -- they are the old names
+
+
 # CREATE DSM MAPS
 
 # import DSM data
-SJER_DSM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+SJER_DSM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # convert to a df for plotting
 SJER_DSM_df <- as.data.frame(SJER_DSM, xy = TRUE)
 
 # import DSM hillshade
-SJER_DSM_hill <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
+SJER_DSM_hill <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
 # convert to a df for plotting
 SJER_DSM_hill_df <- as.data.frame(SJER_DSM_hill, xy = TRUE)
 
@@ -180,11 +174,11 @@ ggplot() +
 # CREATE DTM MAP
 # import DTM
 # think: T = Treetops.
-DTM_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
+DTM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 DTM_SJER_df <- as.data.frame(DTM_SJER, xy = TRUE)
 
 # DTM Hillshade
-DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+DTM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
 DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
 
 ggplot() +
@@ -210,11 +204,11 @@ ggplot() +
 
 # CREATE DTM MAP
 # import DTM
-SJER_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
+SJER_DTM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
 
 # DTM Hillshade
-DTM_hill_SJER <- raster("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
+DTM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
 DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
 
 ggplot() +
