@@ -1,7 +1,7 @@
 # re-writing for the terra-instance of the lesson
 
-library(raster)
-library(rgdal)
+# library(raster)
+# library(rgdal)
 library(ggplot2)
 library(dplyr)
 library(terra)
@@ -49,25 +49,44 @@ ggplot() +
 crs(HARV_DSM)
 
 # calculating maxes and mins
-minmax(HARV_DSM)
+# minmax() doesn't work anymore. maybe it's from raster
+# minmax(HARV_DSM)
+# values() forces it to look at all the values:
 
 min(values(HARV_DSM))
 max(values(HARV_DSM))
 
 
+
+
+# we skipped nlyr
+
 # deal with NA's
 # I think this ggplot should go after any(is.na) and summary()
+# it doesn't actually show any NA's
 ggplot() +
   geom_raster(data = HARV_DSM_df , aes(x = x, y = y, fill = Elevation)) +
   scale_fill_viridis_c(na.value = 'deeppink') +
   coord_quickmap()
 
+
 #check if there are actually any NA's
 #A few ways: 
+
+# this one doesn't show any.
 any(is.na(HARV_DSM_df$Elevation))
 
-# no value = -9999
+# this one shows them explicitly!
 HARV_DSM_info
+
+# challenge:
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+
+# it doesn't seem like sources works
+#sources(HARV_DSM)
+#describe(sources(HARV_DSM))
+
+
 
 # this shows our current raster doesn't have any.
 summary(HARV_DSM)
@@ -85,6 +104,7 @@ ggplot() +
 
 # dealing with bad values
 # lesson shows a figure that it doesn't make.
+# (the map with the pink pixels over 400m)
 # here's the code:
 # The line below is throwing me off: 
 DSM_highvals <- classify(HARV_DSM, rcl = c(0, 400, NA, 420, 1L), include.lowest = TRUE)
@@ -93,6 +113,9 @@ DSM_highvals <- classify(HARV_DSM, rcl = c(0, 400, NA, 420, 1L), include.lowest 
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
 # originally DSM_highvals <- reclassify(DSM_HARV, rcl=c(0,400,Na_Integer_,420,1L), include.lowest =TRUE)
 
+
+############################
+# it doesn't seem like anything past here is actually in the lesson
 
 ### here the elevation isn't being replaced correctly and I'm not sure where to fix
 DSM_highvals <- as.data.frame(DSM_highvals, xy = TRUE)
