@@ -100,16 +100,16 @@ ggplot() +
 
 
 # layering rasters
-HARV_hill <-
+DSM_hill_HARV <-
   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif")
 
-HARV_hill
-HARV_hill_df <- as.data.frame(HARV_hill, xy = TRUE) 
-str(HARV_hill_df)
+DSM_hill_HARV
+DSM_hill_HARV_df <- as.data.frame(DSM_hill_HARV, xy = TRUE) 
+str(DSM_hill_HARV_df)
 
 # plot that with no legend
 ggplot() +
-  geom_raster(data = HARV_hill_df,
+  geom_raster(data = DSM_hill_HARV_df,
               aes(x = x, y = y, alpha = HARV_DSMhill)) + 
   scale_alpha(range =  c(0.15, 0.65), guide = "none") + 
   coord_quickmap()
@@ -120,14 +120,14 @@ ggplot() +
   geom_raster(data = DSM_HARV_df , 
               aes(x = x, y = y, 
                   fill = Elevation)) + 
-  geom_raster(data = HARV_hill_df, 
+  geom_raster(data = DSM_hill_HARV_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DSMhill)) +  
   scale_fill_viridis_c() +  
   scale_alpha(range = c(0.15, 0.65), guide = "none") +  
   ggtitle("Elevation with hillshade") +
   coord_quickmap()
-
+#fill is still Elevation, not HARV_dsmCrop
 
 ###################################
 # challenge map: do it with SJER
@@ -138,23 +138,23 @@ ggplot() +
 # CREATE DSM MAPS
 
 # import DSM data
-SJER_DSM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
+DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # convert to a df for plotting
-SJER_DSM_df <- as.data.frame(SJER_DSM, xy = TRUE)
+DSM_SJER_df <- as.data.frame(SJER_DSM, xy = TRUE)
 
 # import DSM hillshade
-SJER_DSM_hill <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
+DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
 # convert to a df for plotting
-SJER_DSM_hill_df <- as.data.frame(SJER_DSM_hill, xy = TRUE)
+DSM_hill_SJER_df <- as.data.frame(SJER_DSM_hill, xy = TRUE)
 
 # Build Plot
 ggplot() +
-  geom_raster(data = SJER_DSM_df , 
+  geom_raster(data = DSM_SJER_df , 
               aes(x = x, y = y, 
                   fill = SJER_dsmCrop,
                   alpha = 0.8)
   ) + 
-  geom_raster(data = SJER_DSM_hill_df, 
+  geom_raster(data = DSM_hill_SJER_df, 
               aes(x = x, y = y, 
                   alpha = SJER_dsmHill)
   ) +
@@ -201,6 +201,8 @@ ggplot() +
         axis.title.y = element_blank()) +
   ggtitle("DTM with Hillshade") +
   coord_quickmap()
+
+#why are there two versions of this^ code here (same as below)
 
 # CREATE DTM MAP
 # import DTM
