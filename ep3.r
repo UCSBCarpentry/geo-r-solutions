@@ -130,7 +130,7 @@ DSM_hill_SJER_WGS <-
 
 # reproject raster
 # This should be DSM not DTM right? Typo in challenge. 
-DSM_hill_UTMZ18N_SJER <- project(DSM_hill_SJER_WGS,
+DSM_hill_UTMZ18N_SJER<- project(DSM_hill_SJER_WGS,
                                 crs(DSM_SJER),
                                 res = 1)
 

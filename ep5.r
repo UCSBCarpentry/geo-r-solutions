@@ -91,7 +91,7 @@ RGB_sds_HARV[[2]]
 #####
 # Great R tip reminder
 # methods()
-methods(class=class(HARV_stack))
+methods(class=class(RGB_stack_HARV))
 
 # all the things we can do with an object
 methods(class=class(HARV_brick))

@@ -179,7 +179,7 @@ ggplot() +
 
 # CREATE DTM MAP
 # import DTM
-# think: T = Treetops.
+# think: T = Treetops.Isn't T terrain, not trees?
 DTM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 DTM_SJER_df <- as.data.frame(DTM_SJER, xy = TRUE)
 
