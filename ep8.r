@@ -106,7 +106,6 @@ ggplot() +
   coord_sf()
 
 # this doesn't match the lesson
-names(CHM_HARV_df)[names(CHM_HARV_df) == 'layer'] <- 'Elevation'
 # typo here. in episode 4, the fill is HARV_dsmCrop not chmCrop
 # this is wrong in the main lesson 
 ggplot() +

@@ -29,8 +29,8 @@ ggplot() +
 # update: its also not working in the lesson 
 
 # Add CRS to each object
-st_crs(HARV_points)$proj4string
-# rename point_HARV in lesson to HARV_points
+st_crs(point_HARV)$proj4string
+
 
 #Check the CRS of the state and country boundary objects:
 st_crs(state_boundary_US)$proj4string
@@ -39,7 +39,7 @@ st_crs(country_boundary_US)$proj4string
 
 ## CRS Units - View Object Extent
 # first look at the extent of the study site at our tower location
-st_bbox(HARV_points)
+st_bbox(point_HARV)
 # then the state boundary data
 st_bbox(state_boundary_US)
 
@@ -53,7 +53,7 @@ st_bbox(state_boundary_US)
 ggplot() +
   geom_sf(data = country_boundary_US, size = 2, color = "gray18") +
   geom_sf(data = state_boundary_US, color = "gray40") +
-  geom_sf(data = HARV_points, shape = 19, color = "purple") +
+  geom_sf(data = point_HARV, shape = 19, color = "purple") +
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
 
@@ -71,7 +71,7 @@ ggplot() +
           show.legend = "line") +
   scale_color_manual(name = "", labels = "State Boundary",
                      values = c("color" = "gray18")) +
-  geom_sf(data = HARV_points, aes(shape = "shape"), color = "purple") +
+  geom_sf(data = point_HARV, aes(shape = "shape"), color = "purple") +
   scale_shape_manual(name = "", labels = "Fisher Tower",
                      values = c("shape" = 19)) +
   ggtitle("Fisher Tower Harvard Forest") +
