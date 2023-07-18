@@ -2,7 +2,7 @@
 
 # make sure we have the needed libraries
 library(sf)
-library(raster)
+# library(raster)
 library(ggplot2)
 
 # this shows us the attribute table
@@ -59,8 +59,8 @@ footpath_HARV <- lines_HARV %>%
   filter(TYPE == "footpath")
 nrow(footpath_HARV)
 
-nrow(HARV_footpath)
-head(HARV_footpath)
+nrow(footpath_HARV)
+head(footpath_HARV)
 
 # now the exciting part, let's map it
 ggplot() + 
@@ -103,7 +103,7 @@ ggplot() +
 # this just moves on in the lesson
 # but if we want to see unique values,
 # we have to get that column to be a factor
-lines_HARV$TYPE <- factor(HARV_lines$TYPE)
+lines_HARV$TYPE <- factor(lines_HARV$TYPE)
 # now we can see that we need 4 colors
 
 unique(lines_HARV$TYPE)

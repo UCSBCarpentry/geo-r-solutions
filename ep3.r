@@ -114,7 +114,7 @@ DSM_hill_SJER_WGS <-
 # reproject raster
 # This should be DSM not DTM right? Typo in challenge. 
 DSM_hill_UTMZ18N_SJER<- project(DSM_hill_SJER_WGS,
-                                crs(SJER_DSM),
+                                crs(DSM_SJER),
                                 res = 1)
 
 # convert to data.frames

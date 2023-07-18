@@ -140,12 +140,12 @@ ggplot() +
 # import DSM data
 DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # convert to a df for plotting
-DSM_SJER_df <- as.data.frame(SJER_DSM, xy = TRUE)
+DSM_SJER_df <- as.data.frame(DSM_SJER, xy = TRUE)
 
 # import DSM hillshade
 DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
 # convert to a df for plotting
-DSM_hill_SJER_df <- as.data.frame(SJER_DSM_hill, xy = TRUE)
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy = TRUE)
 
 # Build Plot
 ggplot() +
@@ -173,7 +173,7 @@ ggplot() +
 
 # CREATE DTM MAP
 # import DTM
-# think: T = Treetops.
+# think: T = Treetops.Isn't T terrain, not trees?
 DTM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
 DTM_SJER_df <- as.data.frame(DTM_SJER, xy = TRUE)
 
