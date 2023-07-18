@@ -10,12 +10,13 @@ library(dplyr)
 # just in case
 # DSM_HARV
 # DSM_HARV_df
-# STM_HARV
+
 
 # our existing dataframe
 DSM_HARV_df
 
 # mutate into bins
+# this works, but threw an error on 7/18/23
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation = cut(Elevation, breaks = 3))
 
@@ -24,6 +25,7 @@ ggplot() +
 
 unique(DSM_HARV_df$fct_elevation)
 
+# how many pixels in each class?
 DSM_HARV_df %>%
   group_by(fct_elevation) %>%
   count()
@@ -31,12 +33,14 @@ DSM_HARV_df %>%
 # mutate into specified bins
 custom_bins <- c(300, 350, 400, 450)
 
+# again, an error but it works
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
 unique(DSM_HARV_df$fct_elevation_2)
 
 # this again highlights the over 400.
+# like we did visually previously
 ggplot() +
   geom_bar(data = DSM_HARV_df, aes(fct_elevation_2))
 
@@ -63,9 +67,10 @@ ggplot() +
 
 
 # save your colors in an object for re-use
-# and add a title to the legend
 my_col <- terrain.colors(3)
 
+# run the plot again, but 
+# add a title to the legend
 ggplot() +
   geom_raster(data = DSM_HARV_df , aes(x = x, y = y,
                                        fill = fct_elevation_2)) + 
@@ -140,14 +145,15 @@ ggplot() +
 # import DSM data
 DSM_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif")
 # convert to a df for plotting
-DSM_SJER_df <- as.data.frame(SJER_DSM, xy = TRUE)
+DSM_SJER_df <- as.data.frame(DSM_SJER, xy = TRUE)
 
 # import DSM hillshade
 DSM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmHill.tif")
 # convert to a df for plotting
-DSM_hill_SJER_df <- as.data.frame(SJER_DSM_hill, xy = TRUE)
+DSM_hill_SJER_df <- as.data.frame(DSM_hill_SJER, xy = TRUE)
 
 # Build Plot
+# yess it should be tall and skinny
 ggplot() +
   geom_raster(data = DSM_SJER_df , 
               aes(x = x, y = y, 
@@ -203,6 +209,7 @@ ggplot() +
   coord_quickmap()
 
 #why are there two versions of this^ code here (same as below)
+# the below has the old variable names.
 
 # CREATE DTM MAP
 # import DTM

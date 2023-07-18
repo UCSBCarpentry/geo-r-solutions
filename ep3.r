@@ -67,16 +67,13 @@ crs(DTM_hill_UTMZ18N_HARV, parse = TRUE)
 crs(DTM_hill_HARV, parse = TRUE)
 crs(DTM_hill_UTMZ18N_HARV, parse = TRUE)
 
-# but extents remain different. They still won't overlay
-ext(DTM_hill_UTMZ18N_HARV)
-ext(DTM_hill_HARV)
 
 # Raster resolution:
-# and resolutio has a slight mismatch
+# resolution has a slight mismatch
 res(DTM_hill_UTMZ18N_HARV)
 res(DTM_HARV)
 
-# this still doesn't work 
+# so this still doesn't work 
 DTM_hill_UTMZ18N_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy=TRUE)
 ggplot() +
   geom_raster(data = DTM_HARV_df , 
@@ -110,9 +107,18 @@ ggplot() +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
   coord_quickmap()
 
+# even though the extents
+# are different. Sometimes differing
+# extents will mess you up
+ext(DTM_hill_UTMZ18N_HARV)
+ext(DTM_hill_HARV)
+
+
+
 # take home message:
-# projection, extent, and resolution all have
+# projection and resolution have
 # to match!
+# extent may be optional
 
 ##############################
 # challenge: make an overlay for SJER plotting digital terrain model
@@ -124,15 +130,15 @@ DSM_hill_SJER_WGS <-
 
 # reproject raster
 # This should be DSM not DTM right? Typo in challenge. 
-DSM_hill_UTMZ18N_SJER<- project(DSM_hill_SJER_WGS,
-                                crs(SJER_DSM),
+DSM_hill_UTMZ18N_SJER <- project(DSM_hill_SJER_WGS,
+                                crs(DSM_SJER),
                                 res = 1)
 
 # convert to data.frames
 DSM_SJER_df <- as.data.frame(DSM_SJER, xy = TRUE)
-
 DSM_hill_SJER_df <- as.data.frame(DSM_hill_UTMZ18N_SJER, xy = TRUE)
 
+# and now our grand-finale map
 ggplot() +
   geom_raster(data = DSM_hill_SJER_df, 
               aes(x = x, y = y, 

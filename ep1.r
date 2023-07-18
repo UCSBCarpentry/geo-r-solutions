@@ -111,7 +111,7 @@ ggplot() +
 # (the map with the pink pixels over 400m)
 # here's the code:
 # The line below is throwing me off: 
-DSM_highvals <- classify(HARV_DSM, rcl = c(0, 400, NA, 420, 1L), include.lowest = TRUE)
+DSM_highvals <- classify(DSM_HARV, rcl = c(0, 400, NA, 420, 1L), include.lowest = TRUE)
 
 # ^^^^^^^^
 # that's not very elegant at all. There must be a way to get only > 400 and overlay it.
