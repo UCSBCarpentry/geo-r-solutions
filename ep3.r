@@ -1,3 +1,9 @@
+# Episode 3
+# geospatial solutions
+library(ggplot2)
+library(dplyr)
+library(terra)
+
 # helpful R command to see all the objects in memory
 ls()
 
@@ -7,13 +13,16 @@ DTM_hill_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_DTMhil
 DTM_HARV_df <- as.data.frame(DTM_HARV, xy = TRUE)
 DTM_hill_HARV_df <- as.data.frame(DTM_hill_HARV, xy = TRUE)
 
+str(DTM_HARV_df)
+str(DTM_hill_HARV_df)
+
 # this one is intentionally wrong
 # crazy stretch
 ggplot() +
   geom_raster(data = DTM_HARV_df , 
               aes(x = x, y = y, 
                   fill = HARV_dtmCrop)) + 
-  geom_raster(data = HARV_DTM_hill_df, 
+  geom_raster(data = DTM_hill_HARV_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DTMhill_WGS84)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 
@@ -54,18 +63,20 @@ DTM_hill_UTMZ18N_HARV <- project(DTM_hill_HARV,
 crs(DTM_hill_UTMZ18N_HARV, parse = TRUE)
 
 #compare to before
+# now they are the same
 crs(DTM_hill_HARV, parse = TRUE)
+crs(DTM_hill_UTMZ18N_HARV, parse = TRUE)
 
+# but extents remain different. They still won't overlay
 ext(DTM_hill_UTMZ18N_HARV)
 ext(DTM_hill_HARV)
 
-
-#Raster resolution:
+# Raster resolution:
+# and resolutio has a slight mismatch
 res(DTM_hill_UTMZ18N_HARV)
-
 res(DTM_HARV)
 
-# this still doesn't work because the EXTENTS don't match
+# this still doesn't work 
 DTM_hill_UTMZ18N_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy=TRUE)
 ggplot() +
   geom_raster(data = DTM_HARV_df , 
@@ -78,9 +89,8 @@ ggplot() +
   coord_quickmap()
 
 
-#tell R to force newly reprojected raster to 1m x 1m resolution
-
-DTM_hill_UTMZ18N_HARV <- project(DTM_hill_HARV,
+# tell R to force newly reprojected raster to 1m x 1m resolution
+DTM_hill_UTMZ18N_HARV <- project(DTM_hill_UTMZ18N_HARV,
                                  crs(DTM_HARV),
                                  res = res(DTM_HARV))
 res(DTM_hill_UTMZ18N_HARV)
@@ -89,6 +99,7 @@ res(DTM_hill_UTMZ18N_HARV)
 # To plot in ggplot, make a dataframe
 DTM_hill_HARV_2_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy = TRUE)
 
+# now it will overlay!!!
 ggplot() +
   geom_raster(data = DTM_HARV_df , 
               aes(x = x, y = y, 
