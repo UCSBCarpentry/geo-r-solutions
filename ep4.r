@@ -9,6 +9,15 @@ DSM_HARV <-
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 
+
+# describe the files
+# will they overlay?
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+
+# crs, resolution, and extent are all the same!
+
+
 # Terrain
 # Think "Treetops"
 ggplot() +
@@ -27,6 +36,7 @@ ggplot() +
 
 
 # do math to create canopy height model
+# treetops - bare earth = tree height
 CHM_HARV <- DSM_HARV - DTM_HARV
 CHM_HARV_df <- as.data.frame(CHM_HARV, xy = TRUE)
 
@@ -37,8 +47,12 @@ ggplot() +
   coord_quickmap()
 
 #check distribution of values
+# lots of pixels near the ground
+# lots of 20 meter trees
+# makes sense
 ggplot(CHM_HARV_df) +
   geom_histogram(aes(HARV_dsmCrop))
+
 
 # challenge
 min(CHM_HARV_df$HARV_dsmCrop, na.rm = TRUE)
@@ -64,6 +78,7 @@ ggplot() +
   scale_fill_manual(values = terrain.colors(4)) + 
   coord_quickmap()
 
+# Efficient Raster Calculations
 # this is the second way to do raster math: an overlay
 CHM_ov_HARV <- lapp(sds(list(DSM_HARV,DTM_HARV)),
                        fun = function(r1, r2) { return( r1 - r2) })
