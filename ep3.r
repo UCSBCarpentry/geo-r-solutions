@@ -68,10 +68,10 @@ res(DTM_HARV)
 # this still doesn't work because the EXTENTS don't match
 DTM_hill_UTMZ18N_df <- as.data.frame(DTM_hill_UTMZ18N_HARV, xy=TRUE)
 ggplot() +
-  geom_raster(data = HARV_DTM_df , 
+  geom_raster(data = DTM_HARV_df , 
               aes(x = x, y = y, 
                   fill = HARV_dtmCrop)) + 
-  geom_raster(data = HARV_DTM_hill_df, 
+  geom_raster(data = DTM_hill_HARV_df, 
               aes(x = x, y = y, 
                   alpha = HARV_DTMhill_WGS84)) +
   scale_fill_gradientn(name = "Elevation", colors = terrain.colors(10)) + 

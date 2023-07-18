@@ -73,21 +73,20 @@ plotRGB(RGB_stack_HARV,
 # challenge raster
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
 
-HARV_NA <- stack("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
+HARV_NA <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_Ortho_wNA.tif")
 plotRGB(HARV_NA,
         r = 1, g = 2, b = 3)
 
+describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
 
-# bricks are bigger than stacks because they contain the data, they
-# don't point to it. This makes
-# calculations and drawing faster
-HARV_brick <- brick(HARV_stack)
-object.size(HARV_stack)
-object.size(HARV_brick)
+##SpatRaster in R 
 
-# at this scale, the difference isn't apparet
-plotRGB(HARV_brick)
+RGB_sds_HARV <- sds(RGB_stack_HARV)
+RGB_sds_HARV <-sds(list(RGB_stack_HARV, RGB_stack_HARV))
 
+RGB_sds_HARV[[1]]
+
+RGB_sds_HARV[[2]]
 
 #####
 # Great R tip reminder
@@ -96,3 +95,17 @@ methods(class=class(HARV_stack))
 
 # all the things we can do with an object
 methods(class=class(HARV_brick))
+
+# No more bricks
+# bricks are bigger than stacks because they contain the data, they
+# don't point to it. This makes
+# calculations and drawing faster
+#HARV_brick <- brick(HARV_stack)
+#object.size(HARV_stack)
+#object.size(HARV_brick)
+
+# at this scale, the difference isn't apparet
+#plotRGB(HARV_brick)
+
+
+
