@@ -3,7 +3,7 @@
 
 # make sure we have the needed libraries
 library(sf)
-library(raster)
+#library(raster)
 library(ggplot2)
 library(tidyverse)
 
@@ -15,17 +15,17 @@ ls()
 # they draw in order (ie: first line on the bottom)
 ggplot() + 
   geom_sf(data = aoi_boundary_HARV, fill = "grey", color = "grey") +
-  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1) +
-  geom_sf(data = HARV_points) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), size = 1) +
+  geom_sf(data = point_HARV) +
   ggtitle("NEON Harvard Forest Field Site") + 
   coord_sf()
 
 # let's make a better legend
 ggplot() + 
   geom_sf(data = aoi_boundary_HARV, fill = "grey", color = "grey") +
-  geom_sf(data = HARV_lines, aes(color = TYPE),
+  geom_sf(data = lines_HARV, aes(color = TYPE),
           show.legend = "line", size = 1) +
-  geom_sf(data = HARV_points, aes(fill = Sub_Type), color = "black") +
+  geom_sf(data = point_HARV, aes(fill = Sub_Type), color = "black") +
   scale_color_manual(values = road_colors) +
   scale_fill_manual(values = "black") +
   ggtitle("NEON Harvard Forest Field Site") + 
@@ -34,8 +34,8 @@ ggplot() +
 # name that legend better
 ggplot() + 
   geom_sf(data = aoi_boundary_HARV, fill = "grey", color = "grey") +
-  geom_sf(data = HARV_points, aes(fill = Sub_Type)) +
-  geom_sf(data = HARV_lines, aes(color = TYPE), show.legend = "line",
+  geom_sf(data = point_HARV, aes(fill = Sub_Type)) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend = "line",
           size = 1) + 
   scale_color_manual(values = road_colors, name = "Line Type") + 
   scale_fill_manual(values = "black", name = "Tower Location") + 
@@ -57,8 +57,8 @@ ggplot() +
 # shape = 15 is a nice box
   ggplot() +
     geom_sf(data = aoi_boundary_HARV, fill = "grey", color = "grey") +
-    geom_sf(data = HARV_points, aes(fill = Sub_Type), shape = 15) +
-    geom_sf(data = HARV_lines, aes(color = TYPE),
+    geom_sf(data = point_HARV, aes(fill = Sub_Type), shape = 15) +
+    geom_sf(data = lines_HARV, aes(color = TYPE),
             show.legend = "line", size = 1) +
     scale_color_manual(values = road_colors, name = "Line Type") +
     scale_fill_manual(values = "black", name = "Tower Location") +
@@ -76,10 +76,12 @@ plot_locations$soilTypeOr <- factor(plot_locations$soilTypeOr)
 # we'll need 2 colors
 levels(plot_locations$soilTypeOr)
 
+#create a new color palette for the soil type
 blue_orange <- c("cornflowerblue", "darkorange")
 
+#plot it
 ggplot() + 
-  geom_sf(data = HARV_lines, aes(color = TYPE), show.legend = "line") + 
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend = "line") + 
   geom_sf(data = plot_locations, aes(fill = soilTypeOr), 
           shape = 21, show.legend = 'point') + 
   scale_color_manual(name = "Line Type", values = road_colors,
@@ -91,7 +93,7 @@ ggplot() +
 
 # use 2 different symbols to more strongly distinguish
 ggplot() + 
-  geom_sf(data = HARV_lines, aes(color = TYPE), show.legend = "line", size = 1) + 
+  geom_sf(data = lines_HARV, aes(color = TYPE), show.legend = "line", size = 1) + 
   geom_sf(data = plot_locations, aes(fill = soilTypeOr, shape = soilTypeOr),
           show.legend = 'point', size = 3) + 
   scale_shape_manual(name = "Soil Type", values = c(21, 22)) +
@@ -104,15 +106,14 @@ ggplot() +
   coord_sf()
 
 # this doesn't match the lesson
-names(HARV_CHM_df)[names(HARV_CHM_df) == 'layer'] <- 'Elevation'
-# the 2 names in the raster line were wrong
-# is it not CHM? idk where fill = canopy_discrete is from either...
-# NVM fixed the raster lines, last time CHM data used, episode 4.
+names(CHM_HARV_df)[names(CHM_HARV_df) == 'layer'] <- 'Elevation'
+# typo here. in episode 4, the fill is HARV_dsmCrop not chmCrop
+# this is wrong in the main lesson 
 ggplot() +
-  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = Elevation)) +
-  geom_sf(data = HARV_lines, color = "black") +
+  geom_raster(data = CHM_HARV_df, aes(x = x, y = y, fill = HARV_dsmCrop)) +
+  geom_sf(data = lines_HARV, color = "black") +
   geom_sf(data = aoi_boundary_HARV, color = "grey20", size = 1) +
-  geom_sf(data = HARV_points, pch = 8) +
+  geom_sf(data = point_HARV, pch = 8) +
   ggtitle("NEON Harvard Forest Field Site w/ Canopy Height Model") + 
   coord_sf()
 
