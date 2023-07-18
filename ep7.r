@@ -7,63 +7,76 @@ library(ggplot2)
 
 # this shows us the attribute table
 # there's only one point
-View(HARV_points)
+view(point_HARV)
 
 # outputting only the variable names
 # shows you a count of the objects
 # and some other metadata
 # and a sort of 'HEAD'
-HARV_points
-HARV_lines
+point_HARV
+lines_HARV
 
 # we can count the attributes
-ncol(HARV_lines)
+ncol(lines_HARV)
 
 # we can view the attribute names
-names(HARV_lines)
-names(HARV_points)
+names(lines_HARV)
+names(point_HARV)
 
 # our old friend helps too:
-head(HARV_lines)
+head(lines_HARV)
 
 # challenge is here
-HARV_points$Ownership
 
+#find number of attributes
+ncol(point_HARV)
+
+ncol(aoi_boundary_HARV)
 # call out a whole column / attribute:
-HARV_lines$TYPE
+point_HARV$Ownership
 
+names(point_HARV)
 # only the unique values
 # but this doesn't give what you expect. 
 # see below
 # the original fix was around line 100
-levels(HARV_lines$TYPE)
+#levels(HARV_lines$TYPE)
+
+lines_HARV$TYPE
+
+#To see only unique values 
+unique(lines_HARV$TYPE)
+
 
 # must convert that plain text to a factor
-HARV_lines$TYPE <- factor(HARV_lines$TYPE)
+#HARV_lines$TYPE <- factor(HARV_lines$TYPE)
+
+##Subset Features
 
 # all this stuff works with the tidyverse
 # so you can use pipes
-HARV_footpath <- HARV_lines %>% 
+footpath_HARV <- lines_HARV %>% 
   filter(TYPE == "footpath")
+nrow(footpath_HARV)
 
 nrow(HARV_footpath)
 head(HARV_footpath)
 
 # now the exciting part, let's map it
 ggplot() + 
-  geom_sf(data = HARV_footpath) +
+  geom_sf(data = footpath_HARV) +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Footpaths") + 
   coord_sf()
 
 
 ggplot() + 
-  geom_sf(data = HARV_footpath, aes(color = factor(OBJECTID)), size = 1.5) +
+  geom_sf(data = footpath_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
   labs(color = 'Footpath ID') +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Footpaths") + 
   coord_sf()
 
 # challenge 1
-boardwalk_HARV <- HARV_lines %>% 
+boardwalk_HARV <- lines_HARV %>% 
   filter(TYPE == "boardwalk")
 
 # there's 1 row
@@ -75,10 +88,10 @@ ggplot() +
   coord_sf()
 
 # challenge 2
-stoneWall_HARV <- HARV_lines %>% 
+stoneWall_HARV <- lines_HARV %>% 
   filter(TYPE == "stone wall")
-
 nrow(stoneWall_HARV)
+
 
 ggplot() +
   geom_sf(data = stoneWall_HARV, aes(color = factor(OBJECTID)), size = 1.5) +
@@ -90,17 +103,15 @@ ggplot() +
 # this just moves on in the lesson
 # but if we want to see unique values,
 # we have to get that column to be a factor
-levels(HARV_lines$TYPE)
-#this says output NULL? (not the second time around, but flagging anyway)
-
+lines_HARV$TYPE <- factor(HARV_lines$TYPE)
 # now we can see that we need 4 colors
-HARV_lines$TYPE <- factor(HARV_lines$TYPE)
-levels(HARV_lines$TYPE)
+
+unique(lines_HARV$TYPE)
 
 road_colors <- c("blue", "green", "navy", "purple")
 
 ggplot() +
-  geom_sf(data = HARV_lines, aes(color = TYPE)) + 
+  geom_sf(data = lines_HARV, aes(color = TYPE)) + 
   scale_color_manual(values = road_colors) +
   labs(color = 'Road Type') +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails") + 
@@ -109,27 +120,28 @@ ggplot() +
 # use different line widths
 line_widths <- c(1, 2, 3, 4)
 ggplot() +
-  geom_sf(data = HARV_lines, aes(color = TYPE, size = TYPE)) + 
+  geom_sf(data = lines_HARV, aes(color = TYPE, size = TYPE)) + 
   scale_color_manual(values = road_colors) +
   labs(color = 'Road Type') +
   scale_size_manual(values = line_widths) +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
   coord_sf()
 
+##Challenge: Plot line width by attribute
 # they come out in the order they are stored,
 # so you can assign in that order
-levels(HARV_lines$TYPE)
+unique(lines_HARV$TYPE)
 line_width <- c(1, 3, 2, 6)
 
 ggplot() +
-  geom_sf(data = HARV_lines, aes(size = TYPE)) +
+  geom_sf(data = lines_HARV, aes(size = TYPE)) +
   scale_size_manual(values = line_width) +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails - Line width varies") + 
   coord_sf()
 
 # work on that legend
 ggplot() + 
-  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), size = 1.5) +
   scale_color_manual(values = road_colors) +
   labs(color = 'Road Type') + 
   ggtitle("NEON Harvard Forest Field Site", 
@@ -138,7 +150,7 @@ ggplot() +
 
 # change legend text and draw a box around it
 ggplot() + 
-  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) +
+  geom_sf(data = lines_HARV, aes(color = TYPE), size = 1.5) +
   scale_color_manual(values = road_colors) + 
   labs(color = 'Road Type') +
   theme(legend.text = element_text(size = 14), 
@@ -151,7 +163,7 @@ ggplot() +
 new_colors <- c("springgreen", "blue", "magenta", "orange")
 
 ggplot() + 
-  geom_sf(data = HARV_lines, aes(color = TYPE), size = 1.5) + 
+  geom_sf(data = lines_HARV, aes(color = TYPE), size = 1.5) + 
   scale_color_manual(values = new_colors) +
   labs(color = 'Road Type') +
   theme(legend.text = element_text(size = 14), 
@@ -162,24 +174,23 @@ ggplot() +
 
 
 # bicycle challenge
-class(HARV_lines$BIKEHORSE)
-#output is NULL?is it supposed to be BIKEHORSE instead of BicyclesHorse?
+lines_HARV$BicyclesHo <- as.factor(lines_HARV$BicyclesHo)
+class(lines_HARV$BicyclesHo)
 
 # same iss ue as roadtype
-levels(HARV_lines$BIKEHORSE)
-HARV_lines$BIKEHORSE <- factor(HARV_lines$BIKEHORSE)
-levels(HARV_lines$BIKEHORSE)
+levels(lines_HARV$BicyclesHo)
 
-# it's not clear why we should get rid of these
-lines_removeNA <- HARV_lines[!is.na(HARV_lines$BicyclesHo),] 
+# remove missing values
+lines_removeNA <- lines_HARV[!is.na(lines_HARV$BicyclesHo),]
 
 # First, create a data frame with only those roads where bicycles and horses are allowed
-lines_showHarv <- lines_removeNA %>% 
+lines_showHarv <- 
+  lines_removeNA %>% 
   filter(BicyclesHo == "Bicycles and Horses Allowed")
 
 # Next, visualise using ggplot
 ggplot() + 
-  geom_sf(data = HARV_lines) + 
+  geom_sf(data = lines_HARV) + 
   geom_sf(data = lines_showHarv, aes(color = BicyclesHo), size = 2) + 
   scale_color_manual(values = "magenta") +
   ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads Where Bikes and Horses Are Allowed") + 
@@ -188,3 +199,4 @@ ggplot() +
 
 ## all new data
 ## skip last challenge for time
+## even skipping last challenge, there's a lot in this episode 
