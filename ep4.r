@@ -1,13 +1,13 @@
 # ep 4
 
-#need to reload HARV_DSM
+# we should already have dataframes for 
+# HARV_DTM and HARV_DSM
+# if need to reload and remake HARV_DSM
+
 DSM_HARV <- 
   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
-
 names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
-# we should already have dataframes for 
-# HARV_DTM and HARV_DSM
 
 # Terrain
 # Think "Treetops"
