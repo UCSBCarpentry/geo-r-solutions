@@ -97,13 +97,10 @@ max(CHM_ov_HARV_df$HARV_dsmCrop, na.rm = TRUE)
 max(CHM_HARV_df$HARV_dsmCrop, na.rm = TRUE)
 
 # save our work
-# this object name might be wrong 
-# in the lesson!
-writeRaster(CHM_ov_HARV, "CHM_HARV.tiff",
-            format="GTiff",
+writeRaster(CHM_ov_HARV, "output/CHM_HARV.tiff",
+            filetype="GTiff",
             overwrite=TRUE,
             NAflag=-9999)
-#do we want to make an outputs folder? 
 
 ## SJER Challenge
 CHM_ov_SJER <- lapp(sds(list(DSM_SJER, DTM_SJER)),
@@ -123,12 +120,13 @@ ggplot() +
                        colors = terrain.colors(10)) + 
   coord_quickmap()
 
-#writeRaster(CHM_ov_SJER, "chm_ov_SJER.tiff",
-           # filetype = "GTiff",
-           # overwrite = TRUE,
-           # NAflag = -9999)
+writeRaster(CHM_ov_SJER, "output/chm_ov_SJER.tiff",
+            filetype = "GTiff",
+            overwrite = TRUE,
+            NAflag = -9999)
 
 #compare plots 
+# alot more bare earth in the desert, eh?
 ggplot(CHM_HARV_df) +
   geom_histogram(aes(HARV_dsmCrop))
 
