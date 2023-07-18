@@ -2,12 +2,10 @@
 # geospatial with R
 
 # open a single band of a multi-band image:
-RGB_band1_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
+RGB_band1_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif", lyrs = 1)
 
 RGB_band1_HARV_df  <- as.data.frame(RGB_band1_HARV, xy = TRUE)
 
-#where did HARV_RGB_Ortho come from?
-#is it HARV_RGB_Ortho_1?
 ggplot() +
   geom_raster(data = RGB_band1_HARV_df,
               aes(x = x, y = y, alpha = HARV_RGB_Ortho_1)) + 
@@ -26,6 +24,7 @@ ggplot() +
               aes(x = x, y = y, alpha = HARV_RGB_Ortho_2)) + 
   coord_equal()
 
+# if we don't specify the layer, we get a stack
 # multi-bands get called as 'stacks'
 RGB_stack_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif")
 
@@ -91,21 +90,10 @@ RGB_sds_HARV[[2]]
 #####
 # Great R tip reminder
 # methods()
+# all the things we can do with an object
 methods(class=class(RGB_stack_HARV))
 
-# all the things we can do with an object
-methods(class=class(HARV_brick))
 
-# No more bricks
-# bricks are bigger than stacks because they contain the data, they
-# don't point to it. This makes
-# calculations and drawing faster
-#HARV_brick <- brick(HARV_stack)
-#object.size(HARV_stack)
-#object.size(HARV_brick)
-
-# at this scale, the difference isn't apparet
-#plotRGB(HARV_brick)
 
 
 
