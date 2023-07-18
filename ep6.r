@@ -28,22 +28,25 @@ ggplot() +
   coord_sf()
 
 # Let's move on to point and line shapefiles
-HARV_lines <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
-HARV_points <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
+lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
+point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 
 # that's a "spatial" "dataframe"
-class(HARV_lines)
+class(lines_HARV)
+class(point_HARV)
 
 # it's got a CRS
 # just like raster data does
 # what's the raster version of the command?
-st_crs(HARV_lines)
+st_crs(lines_HARV)
 
 # bounding boxes make more sense when your
 # shapefile is more than just a single rectangle
-st_bbox(HARV_lines)
+st_bbox(lines_HARV)
 
 # a good demo here would be to make
 # shapefiles of the boundng boxes and
 # overlay them
 
+st_crs(point_HARV)
+st_bbox(point_HARV)
