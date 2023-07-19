@@ -148,3 +148,20 @@ mean_tree_height_tower <- extract(x = CHM_HARV,
 mean_tree_height_tower
 
 ## Challenge: Extract raster height values for plot locations
+# 1. use plot locations: plot_locations_sp_HARV to extract av tree height within 20m
+#    of each vegetation plot 
+# 2. create a plot, specifically a bar plot showing mean tree height of each area
+
+# Extract data at each plot location
+mean_tree_height_plots_HARV <- extract(x = CHM_HARV, 
+                                       y = st_buffer(plot_locations_sp_HARV,
+                                                     dist = 20),
+                                       fun = mean)
+mean_tree_height_plots_HARV
+
+#plot data
+ggplot(data = mean_tree_height_plots_HARV, aes(ID, HARV_chmCrop)) +
+  geom_col()+
+  ggtitle("Mean Tree Height at each Plot")+
+  xlab("Plot ID")+
+  ylab("Tree Height(m)")
