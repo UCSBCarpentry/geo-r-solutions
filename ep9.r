@@ -44,11 +44,11 @@ st_bbox(point_HARV)
 st_bbox(state_boundary_US)
 
 #Notice they are quite different. One is in larger numbers whil the other is in smaller numbers
-#Harv points is represented in UTM, while the state boundary is in decimal degrees
+#point_HARV is represented in UTM, while the state boundary is in decimal degrees
 
 #Despite the CRS difference, ggplot can plot them together
 #Automatically converts all object to the same CRS before plotting. 
-#Plot US State, Boundary, and Harv_points together
+#Plot US State, Boundary, and point_HARV together
 
 ggplot() +
   geom_sf(data = country_boundary_US, size = 2, color = "gray18") +

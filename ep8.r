@@ -107,9 +107,13 @@ ggplot() +
 
 # this doesn't match the lesson
 # typo here. in episode 4, the fill is HARV_dsmCrop not chmCrop
-# this is wrong in the main lesson 
+# this is wrong in the main lesson, a new CHM layer was read in.
+CHM_HARV<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
+CHM_HARV_df <- as.data.frame(HARV_CHM, xy = TRUE)
+# I dont know what you want to call it but I switched the HARV_CHM
+
 ggplot() +
-  geom_raster(data = CHM_HARV_df, aes(x = x, y = y, fill = HARV_dsmCrop)) +
+  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
   geom_sf(data = lines_HARV, color = "black") +
   geom_sf(data = aoi_boundary_HARV, color = "grey20", size = 1) +
   geom_sf(data = point_HARV, pch = 8) +

@@ -38,7 +38,7 @@ plot_locations_sp_HARV <- st_as_sf(plot_locations_HARV,
                                    coords = c("easting", "northing"),
                                    crs = utm18nCRS)
 # Check the new CRS to see if correct
-st_crs(plot_locations_sp-HARV)
+st_crs(plot_locations_sp_HARV)
 
 # Now plot the object 
 ggplot() +
@@ -64,7 +64,7 @@ geogCRS <- st_crs(country_boundary_US)
 geogCRS
 
 #ok why is naming so different for this one?
-newPlot.Sp.HARV <- st_as_sf(newplot_loc_HARV,
+newPlot.Sp.HARV <- st_as_sf(newplot_locations_HARV,
                             coords = c("decimalLon", "decimalLat"),
                             crs = geogCRS)
 st_crs(newPlot.Sp.HARV)
