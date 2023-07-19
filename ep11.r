@@ -10,16 +10,15 @@ names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 # DTM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
 # DTM_HARV_df <- as.data.frame(HARV_DTM, xy = TRUE)
 #
-# CHM_HARV <- HARV_DSM - HARV_DTM
-# I reloaded it as HARV_CHM (I already have the earlier dataframe) and the CHM used
-# in this episode is an imported version. What do.
-HARV_CHM<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
-HARV_CHM_df <- as.data.frame(HARV_CHM, xy = TRUE)
-names(CHM_HARV_df)[names(CHM_HARV_df) == 'HARV_chmCrop'] <- 'Elevation'
+
+# read in a clean CHM if you need to. Don't use the layer made in episode 4
+CHM_HARV<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
+CHM_HARV_df <- as.data.frame(HARV_CHM, xy = TRUE)
+#names(CHM_HARV_df)[names(CHM_HARV_df) == 'HARV_chmCrop'] <- 'Elevation'
 #
 aoi_boundary_HARV <- st_read( "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp")
 lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
-point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/")
+point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARVtower_UTM18N.shp")
 #
 country_boundary_US <- st_read(
 "data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp") %>%
@@ -37,87 +36,78 @@ state_boundary_US <- st_read(
 
 #Need to make sure layers is replaced with elevation in CHM_df layer
 ggplot() +
-  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
+  geom_raster(data = CHM_HARV_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
   coord_sf()
 
 #Now subset with cropping operation
-HARV_CHM_Cropped <- crop(x = HARV_CHM, y = aoi_boundary_HARV)
-HARV_CHM_Cropped_df <- as.data.frame(HARV_CHM_Cropped, xy = TRUE)
+CHM_HARV_Cropped <- crop(x = HARV_CHM, y = aoi_boundary_HARV)
+CHM_HARV_Cropped_df <- as.data.frame(CHM_HARV_Cropped, xy = TRUE)
 names(HARV_CHM_Cropped_df)[names(HARV_CHM_Cropped_df) == 'HARV_chmCrop'] <- 'Elevation'
 
 #this plot will show the full CHM extent (green) is much larger than the 
 #cropped raster.
 ggplot() +
-  geom_sf(data = st_as_sfc(st_bbox(HARV_CHM)), fill = "green",
+  geom_sf(data = st_as_sfc(st_bbox(CHM_HARV)), fill = "green",
           color = "green", alpha = .2) +
-  geom_raster(data = HARV_CHM_Cropped_df,
-              aes(x = x, y = y, fill = Elevation)) +
+  geom_raster(data = CHM_HARV_Cropped_df,
+              aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   coord_sf()
 
 #now plot the cropped images
 ggplot() +
-  geom_raster(data = HARV_CHM_Cropped_df,
-              aes(x = x, y = y, fill = Elevation)) +
+  geom_raster(data = CHM_HARV_Cropped_df,
+              aes(x = x, y = y, fill = HARV_chmCrop)) +
   geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   coord_sf()
-# I used the CHM calculated by raster math and the output is more green
-# than the output in the lesson. I'm wondering if its because they imported
-# the layer instead of using the raster math version. (consistency ugh)
-## update: yeah they imported the one in the data folder
+
 
 # Look at the extent of all of the objects: 
-st_bbox(HARV_CHM)
+st_bbox(CHM_HARV)
 
-st_bbox(HARV_CHM_Cropped)
+st_bbox(CHM_HARV_Cropped)
 
 st_bbox(aoi_boundary_HARV)
 
-st_bbox(HARV_plot_locations_sp)
+st_bbox(plot_locations_sp_HARV)
 #this is a lot of stuff in our global environment
 
 ## Challenge DIY - Crop to vector points extent
 # 1. Crop the canopy height model to the extent of the plot locations
 # 2. Plot the vegetation plot points on top of the canopy height model
 
-HARVcrop_CHM_plots <- crop(x = HARV_CHM, y = HARV_plot_locations_sp)
+CHM_plots_HARVcrop <- crop(x = CHM_HARV, y = plot_locations_sp_HARV)
 
-HARVcrop_CHM_plots_df <- as.data.frame(HARVcrop_CHM_plots, xy = TRUE)
+CHM_plots_HARVcrop_df <- as.data.frame(CHM_plots_HARVcrop, xy = TRUE)
 #are we not going to change the fill to layername to elevation here?
 #also naming is all over the place 
 
 ggplot() +
-  geom_raster(data = HARVcrop_CHM_plots_df,
+  geom_raster(data = CHM_plots_HARVcrop_df,
               aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
-  geom_sf(data = HARV_plot_locations_sp) +
+  geom_sf(data = plot_locations_sp_HARV) +
   coord_sf()
 
 # Defining a new extent 
 # use the ext() function to define an extent for a cropping boundary
 
-new_extent <- extent(732161.2, 732238.7, 4713249, 4713333)
+new_extent <- ext(732161.2, 732238.7, 4713249, 4713333)
 class(new_extent)
 # where did this extent come from?
-# also not working. Used extent from raster package instead of ext from terra
-
-# Output:
-# [1]Extent
-# attr("package")
-# [1]raster
 
 
-HARV_CHM_manual_cropped <- crop(x = HARV_CHM, y = new_extent)
+CHM_HARV_manual_cropped <- crop(x = CHM_HARV, y = new_extent)
 # error: cant get extent object from argument y
 
-HARV_CHM_manual_cropped_df <- as.data.frame(HARV_CHM_manual_cropped, xy = TRUE)
+CHM_HARV_manual_cropped_df <- as.data.frame(CHM_HARV_manual_cropped, xy = TRUE)
 
 ggplot() +
   geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
-  geom_raster(data = HARV_CHM_manual_cropped_df,
+  geom_raster(data = CHM_HARV_manual_cropped_df,
               aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   coord_sf()
@@ -128,12 +118,12 @@ ggplot() +
 # the vector layer with the polygons that we want to use as boundar(ies)
 
 #extract canopy values located within the aoi_boundary polygon
-tree_height <- extract(x = HARV_CHM, y = aoi_boundary_HARV, raw = FALSE)
+tree_height <- extract(x = CHM_HARV, y = aoi_boundary_HARV, raw = FALSE)
 
 #str(tree_height_df)
 #missing dataframe 
-tree_height_df <- as.data.frame(tree_height, xy = TRUE)
-str(tree_height_df)
+#tree_height_df <- as.data.frame(tree_height, xy = TRUE)
+#str(tree_height_df)
 
 #even with converting to dataframe, only 1 variable, not two like in the lesson
 #reloaded new chm image but still only 1 variable? 
@@ -143,3 +133,18 @@ ggplot() +
   ggtitle("Histogram of CHM Height Values (m)") +
   xlab("Tree Height") +
   ylab("Frequency of Pixels")
+
+summary(tree_height$HARV_chmCrop)
+
+## Summarize extracted raster values
+mean_tree_height_AOI <- extract(x = CHM_HARV, y = aoi_boundary_HARV,
+                            fun=mean)
+mean_tree_height_AOI
+
+## Extracting data using x,y, locations
+mean_tree_height_tower <- extract(x = CHM_HARV,
+                                  y = st_buffer(point_HARV, dist = 20),
+                                  fun = mean)
+mean_tree_height_tower
+
+## Challenge: Extract raster height values for plot locations
