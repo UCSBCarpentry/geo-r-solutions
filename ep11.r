@@ -2,21 +2,24 @@
 # Manipulate raster data (even more)
 
 #In case we need to remake/reload the environment
-HARV_DSM <- 
+DSM_HARV <- 
   +   raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-HARV_DSM_df <- as.data.frame(HARV_DSM, xy = TRUE)
-names(HARV_DSM_df)[names(HARV_DSM_df) == 'HARV_dsmCrop'] <- 'Elevation'
+DSM_HARV_df <- as.data.frame(HARV_DSM, xy = TRUE)
+names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 #
-# HARV_DTM <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
-# HARV_DTM_df <- as.data.frame(HARV_DTM, xy = TRUE)
+# DTM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
+# DTM_HARV_df <- as.data.frame(HARV_DTM, xy = TRUE)
 #
-# HARV_CHM <- HARV_DSM - HARV_DTM
-HARV_CHM <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
+# CHM_HARV <- HARV_DSM - HARV_DTM
+# I reloaded it as HARV_CHM (I already have the earlier dataframe) and the CHM used
+# in this episode is an imported version. What do.
+HARV_CHM<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
 HARV_CHM_df <- as.data.frame(HARV_CHM, xy = TRUE)
-names(HARV_CHM_df)[names(HARV_CHM_df) == 'HARV_chmCrop'] <- 'Elevation'
+names(CHM_HARV_df)[names(CHM_HARV_df) == 'HARV_chmCrop'] <- 'Elevation'
 #
 aoi_boundary_HARV <- st_read( "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp")
-HARV_lines <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
+lines_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/HARV_roads.shp")
+point_HARV <- st_read("data/NEON-DS-Site-Layout-Files/HARV/")
 #
 country_boundary_US <- st_read(
 "data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp") %>%
@@ -34,7 +37,7 @@ state_boundary_US <- st_read(
 
 #Need to make sure layers is replaced with elevation in CHM_df layer
 ggplot() +
-  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = Elevation)) +
+  geom_raster(data = HARV_CHM_df, aes(x = x, y = y, fill = HARV_chmCrop)) +
   scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) +
   geom_sf(data = aoi_boundary_HARV, color = "blue", fill = NA) +
   coord_sf()
