@@ -80,3 +80,54 @@ ggplot() +
           subtitle = "NEON Harvard Forest Field Site") +
   xlab("Julian Day 2011") +
   ylab("Mean Air Temperature (C)")
+
+
+## Challenge
+# plot the RGB images for Julian days 277 and 293
+# compare plots for Julian days 133 and 197
+# whats throwing off the NDVI?
+
+RGB_277 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/277_HARV_landRGB.tif")
+
+# NOTE: Fix the bands' names so they don't start with a number!
+names(RGB_277) <- paste0("X", names(RGB_277))
+
+RGB_277
+
+# divide by 255 to keep color intensity
+RGB_277 <- RGB_277/255
+
+# convert to dataframe
+RGB_277_df <- as.data.frame(RGB_277, xy = TRUE)
+
+# create RGB colors
+RGB_277_df$rgb <- 
+  with(RGB_277_df, rgb(X277_HARV_landRGB_1, X277_HARV_landRGB_2, 
+                       X277_HARV_landRGB_3, 1))
+# plot julian day 277:
+ggplot() +
+  geom_raster(data=RGB_277_df, aes(x, y), fill=RGB_277_df$rgb) + 
+  ggtitle("Julian day 277") 
+
+# Now do the same for JD 293
+
+#load data
+RGB_293 <- rast("data/NEON-DS-Landsat-NDVI/HARV/2011/RGB/293_HARV_landRGB.tif")
+names(RGB_293) <- paste0("X", names(RGB_293))
+
+#set channel
+RGB_293 <- RGB_293/255
+
+#make dataframe
+RGB_293_df <- as.data.frame(RGB_293, xy = TRUE)
+
+#make RGB channels
+RGB_293_df$rgb <- 
+  with(RGB_293_df, rgb(X293_HARV_landRGB_1, X293_HARV_landRGB_2, 
+                       X293_HARV_landRGB_3,1))
+#plot JD 293
+ggplot() +
+  geom_raster(data = RGB_293_df, aes(x, y), fill = RGB_293_df$rgb) +
+  ggtitle("Julian day 293")
+
+
