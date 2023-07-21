@@ -13,7 +13,7 @@ DTM_HARV_df <- as.data.frame(DTM_HARV, xy = TRUE)
 
 # read in a clean CHM if you need to. Don't use the layer made in episode 4
 CHM_HARV<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
-CHM_HARV_df <- as.data.frame(HARV_CHM, xy = TRUE)
+CHM_HARV_df <- as.data.frame(CHM_HARV, xy = TRUE)
 #names(CHM_HARV_df)[names(CHM_HARV_df) == 'HARV_chmCrop'] <- 'Elevation'
 #
 aoi_boundary_HARV <- st_read( "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp")
