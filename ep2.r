@@ -1,4 +1,5 @@
-# episode 2. Geospatial R
+# Geospatial R
+# episode 2: Classified rasters
 
 # library(raster)
 # library(rgdal)
@@ -15,10 +16,17 @@ library(dplyr)
 # our existing dataframe
 DSM_HARV_df
 
+# red / green
+# Green if you are still trying to run along
+
+
 # mutate into bins
-# this works, but threw an error on 7/18/23
+# 3 equal breaks
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation = cut(Elevation, breaks = 3))
+
+# now you will see a 4th variable
+str(DSM_HARV_df)
 
 ggplot() +
   geom_bar(data = DSM_HARV_df, aes(fct_elevation))
@@ -30,16 +38,15 @@ DSM_HARV_df %>%
   group_by(fct_elevation) %>%
   count()
 
-# mutate into specified bins
+# mutate into your own specified bins
 custom_bins <- c(300, 350, 400, 450)
 
-# again, an error but it works
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
 unique(DSM_HARV_df$fct_elevation_2)
 
-# this again highlights the over 400.
+# this highlights the few over 400.
 # like we did visually previously
 ggplot() +
   geom_bar(data = DSM_HARV_df, aes(fct_elevation_2))
@@ -54,6 +61,7 @@ ggplot() +
   geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = fct_elevation_2)) + 
   coord_quickmap()
 
+# let's talk aesthetics
 # that default color scheme doesn't work so well.
 # try this one:
 terrain.colors(3)
@@ -87,8 +95,17 @@ ggplot() +
   ylab("Northing") +
   coord_quickmap()
 
-
+# ##################
 # challenge plot
+# Create a plot of the Harvard Forest DSM
+# that has:
+  
+#  Six classified ranges of values (break points) 
+#  that are evenly divided among the range of pixel values.
+#
+#   Axis labels.
+#   A plot title.
+
 DSM_HARV_df <- DSM_HARV_df  %>%
   mutate(fct_elevation_6 = cut(Elevation, breaks = 6)) 
 
@@ -208,36 +225,4 @@ ggplot() +
   ggtitle("DTM with Hillshade") +
   coord_quickmap()
 
-#why are there two versions of this^ code here (same as below)
-# the below has the old variable names.
-
-# CREATE DTM MAP
-# import DTM
-SJER_DTM <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif")
-SJER_DTM_df <- as.data.frame(SJER_DTM, xy = TRUE)
-
-# DTM Hillshade
-DTM_hill_SJER <- rast("data/NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmHill.tif")
-DTM_hill_SJER_df <- as.data.frame(DTM_hill_SJER, xy = TRUE)
-
-ggplot() +
-  geom_raster(data = SJER_DTM_df ,
-              aes(x = x, y = y,
-                  fill = SJER_dtmCrop,
-                  alpha = 2.0)
-  ) +
-  geom_raster(data = DTM_hill_SJER_df,
-              aes(x = x, y = y,
-                  alpha = SJER_dtmHill)
-  ) +
-  scale_fill_viridis_c() +
-  guides(fill = guide_colorbar()) +
-  scale_alpha(range = c(0.4, 0.7), guide = "none") +
-  theme_bw() +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  theme(axis.title.x = element_blank(),
-        axis.title.y = element_blank()) +
-  ggtitle("DTM with Hillshade") +
-  coord_quickmap()
 
