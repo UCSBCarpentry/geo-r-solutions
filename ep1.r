@@ -17,7 +17,7 @@ describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 DSM_HARV_info <- capture.output(
   describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 )
-
+str(DSM_HARV_info)
 
 DSM_HARV <- 
   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")

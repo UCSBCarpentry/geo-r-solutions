@@ -6,7 +6,7 @@
 library(ggplot2)
 library(dplyr)
 
-
+ls()
 # insert remaking of objects
 # just in case
 # DSM_HARV
@@ -40,7 +40,7 @@ DSM_HARV_df %>%
 
 # mutate into your own specified bins
 custom_bins <- c(300, 350, 400, 450)
-
+str(custom_bins)
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation_2 = cut(Elevation, breaks = custom_bins))
 
