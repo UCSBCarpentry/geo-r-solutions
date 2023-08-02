@@ -16,13 +16,15 @@ ggplot() +
 country_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layers/US-Boundary-Dissolved-States.shp") %>%
   st_zm()
 
+
 # Overlay both vector files to create a nice state/country map
 # Make the country border slightly thicker to differentiate the country vs states
 ggplot() +
-  geom_sf(data = country_boundary_US, color = "gray18", size = 2) +
-  geom_sf(data = state_boundary_US, color = "gray40") +
+  geom_sf(data = state_boundary_US, color = "gray60") +
+  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25,size = 5)
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
+  
 # Kristi comment, I don't think the country border is any darker or thicker
 # okay so after some testing, the shapefiles aren't alpha so making one darker or bolder
 # won't do anything. The state boundary file is masking the country boundary.
