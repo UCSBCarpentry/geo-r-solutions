@@ -7,7 +7,7 @@ library(ggplot2)
 
 # this shows us the attribute table
 # there's only one point
-view(point_HARV)
+View(point_HARV)
 
 # outputting only the variable names
 # shows you a count of the objects
