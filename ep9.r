@@ -21,14 +21,10 @@ country_boundary_US <- st_read("data/NEON-DS-Site-Layout-Files/US-Boundary-Layer
 # Make the country border slightly thicker to differentiate the country vs states
 ggplot() +
   geom_sf(data = state_boundary_US, color = "gray60") +
-  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25,size = 5)
+  geom_sf(data = country_boundary_US, color = "black",alpha = 0.25,size = 5)+
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
-  
-# Kristi comment, I don't think the country border is any darker or thicker
-# okay so after some testing, the shapefiles aren't alpha so making one darker or bolder
-# won't do anything. The state boundary file is masking the country boundary.
-# update: its also not working in the lesson 
+#pull request made to canonical
 
 # Add CRS to each object
 st_crs(point_HARV)$proj4string
@@ -53,8 +49,8 @@ st_bbox(state_boundary_US)
 #Plot US State, Boundary, and point_HARV together
 
 ggplot() +
-  geom_sf(data = country_boundary_US, size = 2, color = "gray18") +
-  geom_sf(data = state_boundary_US, color = "gray40") +
+  geom_sf(data = state_boundary_US, color = "gray60") +
+  geom_sf(data = country_boundary_US, size = 5, alpha =0.25, color = "black") +
   geom_sf(data = point_HARV, shape = 19, color = "purple") +
   ggtitle("Map of Contiguous US State Boundaries") +
   coord_sf()
