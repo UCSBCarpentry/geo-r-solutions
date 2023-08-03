@@ -16,7 +16,6 @@ library(dplyr)
 DSM_HARV_df
 
 # mutate into bins
-# this works, but threw an error on 7/18/23
 DSM_HARV_df <- DSM_HARV_df %>%
   mutate(fct_elevation = cut(Elevation, breaks = 3))
 
@@ -40,6 +39,7 @@ DSM_HARV_df <- DSM_HARV_df %>%
 unique(DSM_HARV_df$fct_elevation_2)
 
 # this again highlights the over 400.
+# this is a search for outliers
 # like we did visually previously
 ggplot() +
   geom_bar(data = DSM_HARV_df, aes(fct_elevation_2))
