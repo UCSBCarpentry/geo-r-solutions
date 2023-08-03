@@ -3,17 +3,17 @@
 
 #In case we need to remake/reload the environment
 DSM_HARV <- 
-  +   raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
-DSM_HARV_df <- as.data.frame(HARV_DSM, xy = TRUE)
+  +   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
+DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 names(DSM_HARV_df)[names(DSM_HARV_df) == 'HARV_dsmCrop'] <- 'Elevation'
 #
-# DTM_HARV <- raster("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
-# DTM_HARV_df <- as.data.frame(HARV_DTM, xy = TRUE)
+DTM_HARV <- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif")
+DTM_HARV_df <- as.data.frame(DTM_HARV, xy = TRUE)
 #
 
 # read in a clean CHM if you need to. Don't use the layer made in episode 4
 CHM_HARV<- rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/CHM/HARV_chmCrop.tif")
-CHM_HARV_df <- as.data.frame(HARV_CHM, xy = TRUE)
+CHM_HARV_df <- as.data.frame(CHM_HARV, xy = TRUE)
 #names(CHM_HARV_df)[names(CHM_HARV_df) == 'HARV_chmCrop'] <- 'Elevation'
 #
 aoi_boundary_HARV <- st_read( "data/NEON-DS-Site-Layout-Files/HARV/HarClip_UTMZ18.shp")
@@ -42,9 +42,9 @@ ggplot() +
   coord_sf()
 
 #Now subset with cropping operation
-CHM_HARV_Cropped <- crop(x = HARV_CHM, y = aoi_boundary_HARV)
+CHM_HARV_Cropped <- crop(x = CHM_HARV, y = aoi_boundary_HARV)
 CHM_HARV_Cropped_df <- as.data.frame(CHM_HARV_Cropped, xy = TRUE)
-names(HARV_CHM_Cropped_df)[names(HARV_CHM_Cropped_df) == 'HARV_chmCrop'] <- 'Elevation'
+#names(HARV_CHM_Cropped_df)[names(HARV_CHM_Cropped_df) == 'HARV_chmCrop'] <- 'Elevation'
 
 #this plot will show the full CHM extent (green) is much larger than the 
 #cropped raster.
@@ -101,7 +101,6 @@ class(new_extent)
 
 
 CHM_HARV_manual_cropped <- crop(x = CHM_HARV, y = new_extent)
-# error: cant get extent object from argument y
 
 CHM_HARV_manual_cropped_df <- as.data.frame(CHM_HARV_manual_cropped, xy = TRUE)
 
@@ -124,9 +123,6 @@ tree_height <- extract(x = CHM_HARV, y = aoi_boundary_HARV, raw = FALSE)
 #missing dataframe 
 #tree_height_df <- as.data.frame(tree_height, xy = TRUE)
 #str(tree_height_df)
-
-#even with converting to dataframe, only 1 variable, not two like in the lesson
-#reloaded new chm image but still only 1 variable? 
 
 ggplot() +
   geom_histogram(data = tree_height, aes(x = HARV_chmCrop)) +

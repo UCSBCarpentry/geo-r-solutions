@@ -1,3 +1,4 @@
+# Data Carpentry: Raster and Vector Data in R
 # re-writing for the terra-instance of the lesson
 
 # library(raster)
@@ -12,17 +13,18 @@ library(terra)
 getwd()
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
+# capture.output is 'base R'
 DSM_HARV_info <- capture.output(
   describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 )
-
+str(DSM_HARV_info)
 
 DSM_HARV <- 
   rast("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
 DSM_HARV
 
-# this one based on a sample
+# note the warning that this one based on a sample
 summary(DSM_HARV)
 
 # you can force it to calculate using
@@ -32,8 +34,9 @@ summary(values(DSM_HARV))
 # or the tidy way
 values(DSM_HARV) %>% summary()
 
-# as usual, ggplot wants dataframes,
+# ggplot uses dataframes,
 # so get used to making them
+# for single-channel rasters
 DSM_HARV_df <- as.data.frame(DSM_HARV, xy = TRUE)
 
 str(DSM_HARV_df)
@@ -66,12 +69,6 @@ max(values(DSM_HARV))
 # we skipped nlyr
 
 # deal with NA's
-# I think this ggplot should go after any(is.na) and summary()
-# it doesn't actually show any NA's
-ggplot() +
-  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Elevation)) +
-  scale_fill_viridis_c(na.value = 'deeppink') 
-
 
 #check if there are actually any NA's
 #A few ways: 
@@ -82,15 +79,24 @@ any(is.na(DSM_HARV_df$Elevation))
 # this one shows them explicitly!
 DSM_HARV_info
 
+# I think this ggplot should go after any(is.na) and summary()
+# it doesn't actually show any NA's
+ggplot() +
+  geom_raster(data = DSM_HARV_df , aes(x = x, y = y, fill = Elevation)) +
+  scale_fill_viridis_c(na.value = 'deeppink') 
+
+
+
+
+
 # challenge:
 describe("data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif")
 
-# it doesn't seem like sources works
-# sources(HARV_DSM)
-#describe(sources(HARV_DSM))
+ sources(DSM_HARV)
+describe(sources(DSM_HARV))
 
 
-# this shows our current raster doesn't have any NA's.
+# this also shows our current raster doesn't have any NA's.
 summary(DSM_HARV)
 
 
